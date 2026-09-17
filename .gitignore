@@ -8,3 +8,4 @@ __pycache__/
 
 # papers (not for the repo)
 *.pdf
+_to_delete/
