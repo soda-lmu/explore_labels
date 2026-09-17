@@ -1,0 +1,235 @@
+{
+ "built": "2026-09-17T15:13:53+00:00",
+ "source_repo": "https://github.com/AnonymousACLSubmission/llm-annotation-sensitivity",
+ "files": {
+  "items.parquet": {
+   "rows": 3000,
+   "bytes": 190358,
+   "sha256": "b02f5589972371f1d2237a30bbce47c60a9e27033e44132efebea4e602bc034b"
+  },
+  "instruments.parquet": {
+   "rows": 180,
+   "bytes": 33545,
+   "sha256": "03aeeaaaac3ec71159f27931da65a54ebdbf5a331382924c68734c6169c25733"
+  },
+  "item_labels.parquet": {
+   "rows": 540000,
+   "bytes": 324622,
+   "sha256": "5de5647f06b8630065b202cf79453a87172f35051eebc38d523a2fbf93279e1f"
+  },
+  "pairwise.parquet": {
+   "rows": 8010,
+   "bytes": 171178,
+   "sha256": "d52e82bf19907ceb229f1c58bdb61ed7a0de29a63eceb8045286913dda4d7ff8"
+  },
+  "run_prevalence.parquet": {
+   "rows": 504,
+   "bytes": 7915,
+   "sha256": "fe775ea29ec124ad15831ebe914cfaf8ed108c443c349217f1a343adc93fad8e"
+  },
+  "item_profiles.parquet": {
+   "rows": 6000,
+   "bytes": 39139,
+   "sha256": "9add2be7d910e8f02d0403faf517d6cfc060990a038f2b422c04aa7cb70d71c1"
+  },
+  "llm_annotations.parquet": {
+   "rows": 1512000,
+   "bytes": 2863940,
+   "sha256": "2b56267b770919f5fba90d0af1297fd3f9240602647cbf81220d1b7331cbee52"
+  },
+  "human_annotations.parquet": {
+   "rows": 89800,
+   "bytes": 131259,
+   "sha256": "16a596333689678ecf9d15dbd73df5cdaf6b54def348a08a9f6e6db71baa0d88"
+  },
+  "item_labels_wide_OL.parquet": {
+   "rows": 3000,
+   "bytes": 122531,
+   "sha256": "f8b511ce0638a3a9fdfe90dd9e63a31f6404547240a1cbbefa87e1ce97a7f352"
+  },
+  "item_labels_wide_HS.parquet": {
+   "rows": 3000,
+   "bytes": 120019,
+   "sha256": "7eaf6d84a609d04910a61c3c29e9ed2df4abbc7759bfcd6bfa19d8c47781fef7"
+  }
+ },
+ "qc": {
+  "raw_files": [
+   {
+    "model": "GPT-4o-mini",
+    "file": "raw/GPT4o_mini/2025_07_01_gpt_labels_explanation_3000t_4c_3r_confno.csv",
+    "rows": 12000,
+    "sha256": "ebe1666ffb87e2df7f1b35167e5006575fefccc528777d2d1dad50ce372a60b0"
+   },
+   {
+    "model": "GPT-4o-mini",
+    "file": "raw/GPT4o_mini/2025_07_01_gpt_labels_explanation_3000t_4c_3r_confno_batch.csv",
+    "rows": 12000,
+    "sha256": "67c5f4d044fb3be3c467b406dff0ccfa6c7645e8ca12543492ecfa69f30c14eb"
+   },
+   {
+    "model": "GPT-4o-mini",
+    "file": "raw/GPT4o_mini/2025_07_01_gpt_labels_explanation_3000t_4c_3r_confyes.csv",
+    "rows": 12000,
+    "sha256": "3f7be0f03d8b81885e66b6f1fd694d66c5b7def4451a79d203304688b0886198"
+   },
+   {
+    "model": "GPT-4o-mini",
+    "file": "raw/GPT4o_mini/2025_07_01_gpt_labels_explanation_3000t_4c_3r_confyes_batch.csv",
+    "rows": 12000,
+    "sha256": "4bc9221c41add49ec420b35a309b60e1ce704afbdc21a8e5fedc2fe72b5bc3d2"
+   },
+   {
+    "model": "GPT-5.4",
+    "file": "raw/GPT5.4/2026_03_13_gpt5.4_labels_explanation_3000t_4c_3r_confno.csv",
+    "rows": 12000,
+    "sha256": "3a5b02354e6ea6ae6d039bbb772e5ad270c8d0134f9a73899d2598e52452cfec"
+   },
+   {
+    "model": "GPT-5.4",
+    "file": "raw/GPT5.4/2026_03_17_gpt5.4_labels_explanation_3000t_4c_3r_confno_batch.csv",
+    "rows": 12000,
+    "sha256": "83ee35651a08e75d9c6da6815e170aa9f6022c1ef78248d0bb99e41bcfa7b882"
+   },
+   {
+    "model": "GPT-5.4",
+    "file": "raw/GPT5.4/2026_03_17_gpt5.4_labels_explanation_3000t_4c_3r_confyes.csv",
+    "rows": 12000,
+    "sha256": "fea23811c57146520df982a9caf35e1d85402856fc2a2015b25c5c6a4a363043"
+   },
+   {
+    "model": "GPT-5.4",
+    "file": "raw/GPT5.4/2026_03_17_gpt5.4_labels_explanation_3000t_4c_3r_confyes_batch.csv",
+    "rows": 12000,
+    "sha256": "8fabee5cc91fa7ca1f4e5189653e4db4abc6c9d1eb4890ca0a6d0d1a1f74eb43"
+   },
+   {
+    "model": "Mistral-Large-3",
+    "file": "raw/MistralLarge3/2026_04_07_mistral_large3_labels_explanation_3000t_4c_3r_confno.csv",
+    "rows": 12000,
+    "sha256": "a1ce27967ac48d8358029b4bd830d81dad77967930a8c889a718e7ca57110cbc"
+   },
+   {
+    "model": "Mistral-Large-3",
+    "file": "raw/MistralLarge3/2026_04_08_mistral_large_3_batch_async_3000t_4c_3r.csv",
+    "rows": 12000,
+    "sha256": "8dbbe98996b8c96fcfe728af11ca0b8fe22cca36d50cfd2a46942560023ffd75"
+   },
+   {
+    "model": "Mistral-Large-3",
+    "file": "raw/MistralLarge3/2026_04_08_mistral_large_3_labels_batch_async_scores_3000t_4c_3r.csv",
+    "rows": 12000,
+    "sha256": "9da984eada12699323e0fe3793beb058d52d22f766e2a3f7ca8b52ebd413da06"
+   },
+   {
+    "model": "Mistral-Large-3",
+    "file": "raw/MistralLarge3/2026_04_09_mistral_large_3_labels_async_conf_3000t_4c_3r.csv",
+    "rows": 12000,
+    "sha256": "98d86dc809a275287723fe03677f393c69263323c0965c0144ca4a226c7f140f"
+   },
+   {
+    "model": "Mistral-Medium-3.5",
+    "file": "raw/MistralMedium3.5_new/2026_06_30_mistral_medium3.5_labels_explanation_3000t_4c_3r_confno.csv",
+    "rows": 12000,
+    "sha256": "8f2ebfca02813ac8c978abc32a1e6c67030093da84a7107724f619ca553f31d7"
+   },
+   {
+    "model": "Mistral-Medium-3.5",
+    "file": "raw/MistralMedium3.5_new/2026_06_30_mistral_medium3.5_labels_explanation_3000t_4c_3r_confyes.csv",
+    "rows": 12000,
+    "sha256": "e5de96f47c2e9cbdb9b30e0aa59d923250ac64a6c6f5946938ee566d2d7b8d98"
+   },
+   {
+    "model": "Mistral-Medium-3.5",
+    "file": "raw/MistralMedium3.5_new/2026_07_01_mistral_medium3.5_labels_explanation_3000t_4c_3r_confno_batch.csv",
+    "rows": 12000,
+    "sha256": "dd3c1c158b17838ce2ee543603fb938d39c5ac4a9af819882a551d7217f3fac5"
+   },
+   {
+    "model": "Mistral-Medium-3.5",
+    "file": "raw/MistralMedium3.5_new/2026_07_01_mistral_medium3.5_labels_explanation_3000t_4c_3r_confyes_batch.csv",
+    "rows": 12000,
+    "sha256": "61c6de085bc36a5f8ed00251f1a53a96ae72520be0db417372f38954655ab8ea"
+   },
+   {
+    "model": "Llama-3.1-8B",
+    "file": "raw/Llama3.1_8B_new/2026_07_21_llama31_8b_labels_async_conf_3000t_4c_3r.csv",
+    "rows": 12000,
+    "sha256": "416969a2cf20259d9bf937b9c253813536262b93f4a23392f6bdc6b9d6feee30"
+   },
+   {
+    "model": "Llama-3.1-8B",
+    "file": "raw/Llama3.1_8B_new/2026_07_21_llama31_8b_labels_batch_async_confno_3000t_4c_3r.csv",
+    "rows": 12000,
+    "sha256": "70aa22510183e0e41b6703c9c7c2c72f6af46696b45bd38185d364e3f09218ef"
+   },
+   {
+    "model": "Llama-3.1-8B",
+    "file": "raw/Llama3.1_8B_new/2026_07_21_llama31_8b_labels_batch_async_scores_3000t_4c_3r.csv",
+    "rows": 12000,
+    "sha256": "fe96beaf07b2164fed57e79dbc3cb807c2abcff6a631a61dd3db9bd772d7b976"
+   },
+   {
+    "model": "Llama-3.1-8B",
+    "file": "raw/Llama3.1_8B_new/2026_07_23_llama31_8b_labels_async_confno_3000t_4c_3r.csv",
+    "rows": 12000,
+    "sha256": "8f732d7c21a0cad3f739788e9d7baa04bbd5193f2f5e77e0008cb74a28ab219d"
+   },
+   {
+    "model": "Llama-3.1-70B",
+    "file": "raw/Llama3.1_70B_new/2026_07_19_llama31_70b_labels_async_conf_3000t_4c_3r.csv",
+    "rows": 12000,
+    "sha256": "8dc24208b335bfaf2b0a315db8e4dc230d37f468cb54cbce02c1cb0b9a0d7eca"
+   },
+   {
+    "model": "Llama-3.1-70B",
+    "file": "raw/Llama3.1_70B_new/2026_07_19_llama31_70b_labels_batch_async_scores_3000t_4c_3r.csv",
+    "rows": 12000,
+    "sha256": "378c751bbfb540ff5f05ccb8b6450e6f241340a75a4cde896b18044e3364bf98"
+   },
+   {
+    "model": "Llama-3.1-70B",
+    "file": "raw/Llama3.1_70B_new/2026_07_21_llama31_70b_labels_async_confno_3000t_4c_3r.csv",
+    "rows": 12000,
+    "sha256": "5267de45a204ddb389407681344b79c0fb28005cbc436663da8150d610c643d5"
+   },
+   {
+    "model": "Llama-3.1-70B",
+    "file": "raw/Llama3.1_70B_new/2026_07_21_llama31_70b_labels_batch_async_confno_3000t_4c_3r.csv",
+    "rows": 12000,
+    "sha256": "c91a18aa272c27f500b60e0a05b080c184a8002c7f7966e9069c7e21bb97b424"
+   },
+   {
+    "model": "Llama-4",
+    "file": "raw/Llama4/2026_03_30_llama4_labels_explanation_3000t_4c_3r_confno.csv",
+    "rows": 12000,
+    "sha256": "e571ff04d2cfa492a54a4c789361213903e53866eaa73021ef659269267ef651"
+   },
+   {
+    "model": "Llama-4",
+    "file": "raw/Llama4/2026_04_02_llama4_labels_explanation_3000t_4c_3r_confyes.csv",
+    "rows": 12000,
+    "sha256": "540b5cfb6b8bd93a42e73ee2b316976723dda66ea9fec81a6f86559b129b9071"
+   },
+   {
+    "model": "Llama-4",
+    "file": "raw/Llama4/2026_04_03_llama4_labels_explanation_3000t_4c_3r_confno_batch.csv",
+    "rows": 12000,
+    "sha256": "b7e8c7531c9b77b497151a47159ce03bf54ba739b82032331949cbc2ab40e6be"
+   },
+   {
+    "model": "Llama-4",
+    "file": "raw/Llama4/2026_04_03_llama4_labels_explanation_3000t_4c_3r_confyes_batch.csv",
+    "rows": 12000,
+    "sha256": "ab3b6ac1e420ee2028d3a24552a037305cb7844d5a10a90161a8043665e445d1"
+   }
+  ],
+  "raw_response_rows": 1008000,
+  "structural_rows_excluded_OL": 252000,
+  "structural_rows_excluded_HS": 252000,
+  "unusable_labels": {
+   "OL": 1,
+   "HS": 1
+  }
+ }
+}

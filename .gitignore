@@ -1,0 +1,10 @@
+sources/
+website/node_modules/
+website/dist/
+website/pipeline/_cache/
+__pycache__/
+.pytest_cache/
+.DS_Store
+
+# papers (not for the repo)
+*.pdf

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methods & data · Annotation Sensitivity Explorer</title>
+<meta name="description" content="Definitions, eligibility rules, provenance and limitations behind every number on the site.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='1' y='9' width='3' height='6' fill='%230072b2'/><rect x='6' y='4' width='3' height='11' fill='%23e69f00'/><rect x='11' y='7' width='3' height='8' fill='%23009e73'/></svg>">
+<link rel="stylesheet" href="./styles/site.css">
+</head>
+<body>
+<a class="sr-only" href="#main">Skip to content</a>
+<header class="site-header"><div class="inner">
+  <a class="brand" href="index.html">Annotation Sensitivity Explorer</a>
+  <nav aria-label="Sections">
+    <a href="index.html">Overview</a>
+    <a href="compare.html">Compare instruments</a>
+    <a href="landscape.html">Landscape</a>
+    <a href="methods.html">Methods &amp; data</a>
+  </nav>
+  <button type="button" class="theme-toggle">Dark theme</button>
+</div></header>
+<main id="main">
+
+<h1>Methods, data and limitations</h1>
+<div id="methods-body">
+<h2>Data</h2>
+<p><strong>LLM labels.</strong> Seven models (GPT-4o-mini, GPT-5.4, Mistral Large 3, Mistral Medium 3.5, Llama 3.1 8B, Llama 3.1 70B, Llama 4) labeled the 3,000 tweets under 12 task designs, three runs each, at temperature 1: 755,999 usable labels per outcome. One Llama 3.1 8B response (joint, OL-first design) could not be parsed and is excluded. A temporal re-collection of GPT-4o-mini and GPT-5.4-mini are not included.</p>
+<p><strong>Human ratings.</strong> The exact subset used in Kern et al. (2023): 44,900 ratings from 917 annotators on the same 3,000 tweets, five questionnaire versions, three ratings per tweet per version (100 ratings are missing in versions C and D). The public Hugging Face file also contains 44,250 ratings on 50 additional tweets; those are excluded.</p>
+<p><strong>Tweet text</strong> is the masked text distributed with the Kern et al. data. The 3,000 tweets are a stratified sample of the Davidson et al. (2017) corpus, so no prevalence here estimates prevalence on Twitter.</p>
+
+<h2>Definitions</h2>
+<dl>
+<dt>Eligible labels</dt><dd>In the separate-call designs only one construct is asked per call. The construct that was not asked is excluded, never counted as a negative label.</dd>
+<dt>Label-level prevalence</dt><dd>Share of positive labels among all eligible labels of an instrument (LLM: every run; humans: every rating).</dd>
+<dt>Item-level label</dt><dd>LLM: the modal label over three runs (a cell with one missing run and a 1–1 tie counts as negative, as in the paper's R code). Humans: the majority of the three ratings within a version; a 1–1 tie between two valid ratings counts as positive. The paper's human reference is the majority of all 15 ratings.</dd>
+<dt>Reliability</dt><dd>Fleiss' κ across the three runs (LLM) or three annotators (humans) of one instrument, over tweets with three valid labels. Human cards also show Krippendorff's α.</dd>
+<dt>Sensitivity</dt><dd>Cohen's κ and raw agreement between the item-level labels of two instruments, over tweets with a label on both sides. Raw agreement is always shown because κ depends on prevalence.</dd>
+<dt>Label flips</dt><dd>Tweets whose item-level label differs between the two instruments, by direction.</dd>
+</dl>
+
+<h2>Comparing humans and LLMs</h2>
+<p>Human version A (both constructs on one screen, HS first) is a close structural match for the LLM design “Joint, HS first · Base”. Versions B–E share features with separate LLM calls, but separate calls keep no order between constructs, and a block of 50 sequential human judgments is not the same as six tweets in one prompt. The five human versions were answered by different annotator panels, so differences between them include panel sampling variation.</p>
+
+<h2>Verification</h2>
+<p>The data build stops unless the web data reproduce the paper's per-cell prevalences, all 168 within-design Fleiss κ values, all 924 cross-design Cohen κ values, the κ values against the human reference, and Kern et al.'s Table 1. The last check is below.</p>
+<div id="manifest"></div>
+
+<h2>Known limitations of this build</h2>
+<ul>
+<li>Kern et al.'s Table 2 (Krippendorff's α between version modal labels) is reproduced to within 0.025, not exactly; their tie rule for tweets with two valid ratings is not documented.</li>
+<li>For the one cell containing the unusable Llama 3.1 8B response, the paper reports no within-design κ; this site computes it over the 2,999 complete tweets.</li>
+<li>Variance components, design effects, model-specific effects and confidence calibration are not yet shown (planned modules).</li>
+</ul>
+</div>
+</main>
+<footer><div class="inner">
+  Tweets from <a href="https://ojs.aaai.org/index.php/ICWSM/article/view/14955">Davidson et al. (2017)</a>, “Automated Hate Speech Detection and the Problem of Offensive Language,” <i>ICWSM</i>.
+  Data: LLM annotations from “Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance” (2026, under review);
+  human ratings from Kern et al. (2023), <i>Annotation Sensitivity</i>. Both datasets are published here by the study authors. <span id="build-info"></span>
+</div></footer>
+<script type="module" src="./js/pages/methods.js"></script>
+</body>
+</html>

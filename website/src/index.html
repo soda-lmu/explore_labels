@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annotation Sensitivity Explorer</title>
+<meta name="description" content="3,000 tweets labeled by people and LLMs under different setups. See how much the setup changes the labels.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='1' y='9' width='3' height='6' fill='%230072b2'/><rect x='6' y='4' width='3' height='11' fill='%23e69f00'/><rect x='11' y='7' width='3' height='8' fill='%23009e73'/></svg>">
+<link rel="stylesheet" href="./styles/site.css">
+</head>
+<body>
+<a class="sr-only" href="#main">Skip to content</a>
+<header class="site-header"><div class="inner">
+  <a class="brand" href="index.html">Annotation Sensitivity Explorer</a>
+  <nav aria-label="Sections">
+    <a href="index.html">Overview</a>
+    <a href="compare.html">Compare instruments</a>
+    <a href="landscape.html">Landscape</a>
+    <a href="methods.html">Methods &amp; data</a>
+  </nav>
+  <button type="button" class="theme-toggle">Dark theme</button>
+</div></header>
+<main id="main">
+
+<h1>Same tweets, different labels</h1>
+<p class="lede">Does the way you ask for a label change the label you get? We took 3,000 tweets from a widely used hate speech dataset (<a href="https://ojs.aaai.org/index.php/ICWSM/article/view/14955">Davidson et al., 2017</a>) and had them labeled for <span class="kw kw-ol">offensive language (OL)</span> and <span class="kw kw-hs">hate speech (HS)</span>, by people and by LLMs, and changed how the questions were asked.</p>
+<p>917 people were randomly assigned to one of <a href="#human-versions">five versions of the labeling task</a>. Seven LLMs labeled the same tweets under <a href="#llm-designs">twelve prompt conditions</a>. The diagrams below show each setup. Further down, you can see how much these choices move the labels.</p>
+
+<section id="human-versions" class="anchor-target">
+  <h2>How people labeled the tweets</h2>
+  <p>Each person labeled up to 50 tweets and stayed in one version for the whole task. The definitions of offensive language and hate speech were the same in every version; only the layout and order changed. Every tweet was labeled by three people in each version.</p>
+  <div id="human-fig" class="figure"></div>
+</section>
+
+<section id="llm-designs" class="anchor-target">
+  <h2>How LLMs labeled the tweets</h2>
+  <p>The LLMs got the same definitions. We changed three things about the prompt and tried every combination.</p>
+  <div id="llm-fig" class="figure"></div>
+</section>
+
+<section id="trap" class="anchor-target">
+  <h2>Does the setup change the labels?</h2>
+  <p>Each dot shows the share of tweets that one setup labeled as offensive language or hate speech. Run the same LLM with the same prompt again and the share barely moves, so the labels look consistent. Change the prompt or the model and the share can move a lot. The five human versions differ too.</p>
+  <div class="controls" id="trap-controls"></div>
+  <div id="trap-legend"></div>
+  <div class="figure" id="trap-plot"><p class="loading">Loading…</p></div>
+  <div class="grid tiles" id="trap-tiles"></div>
+  <p class="small muted" id="trap-note"></p>
+  <h3>Compare two setups tweet by tweet</h3>
+  <div class="chips" id="presets"></div>
+</section>
+</main>
+<footer><div class="inner">
+  Tweets from <a href="https://ojs.aaai.org/index.php/ICWSM/article/view/14955">Davidson et al. (2017)</a>, “Automated Hate Speech Detection and the Problem of Offensive Language,” <i>ICWSM</i>.
+  Data: LLM annotations from “Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance” (2026, under review);
+  human ratings from Kern et al. (2023), <i>Annotation Sensitivity</i>. Both datasets are published here by the study authors. <span id="build-info"></span>
+</div></footer>
+<script type="module" src="./js/pages/index.js"></script>
+</body>
+</html>

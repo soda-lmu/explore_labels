@@ -1,0 +1,23 @@
+{
+  "name": "label-explore",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "data": "python3 pipeline/build_web_data.py && python3 pipeline/validate_web_data.py",
+    "test": "npm run test:py && npm run test:js",
+    "test:py": "python3 -m pytest -q tests",
+    "test:js": "node --test \"tests/js/*.test.js\"",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@observablehq/plot": "^0.6.17",
+    "d3": "^7.9.0",
+    "hyparquet": "^1.17.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.0"
+  },
+  "engines": { "node": ">=20" }
+}

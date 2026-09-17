@@ -1,0 +1,342 @@
+{
+ "models": [
+  {
+   "id": "GPT-4o-mini",
+   "label": "GPT-4o-mini",
+   "family": "OpenAI"
+  },
+  {
+   "id": "GPT-5.4",
+   "label": "GPT-5.4",
+   "family": "OpenAI"
+  },
+  {
+   "id": "Mistral-Large-3",
+   "label": "Mistral Large 3",
+   "family": "Mistral"
+  },
+  {
+   "id": "Mistral-Medium-3.5",
+   "label": "Mistral Medium 3.5",
+   "family": "Mistral"
+  },
+  {
+   "id": "Llama-3.1-8B",
+   "label": "Llama 3.1 8B",
+   "family": "Meta"
+  },
+  {
+   "id": "Llama-3.1-70B",
+   "label": "Llama 3.1 70B",
+   "family": "Meta"
+  },
+  {
+   "id": "Llama-4",
+   "label": "Llama 4",
+   "family": "Meta"
+  }
+ ],
+ "designs": [
+  {
+   "design_id": "joint_ol__base",
+   "structure": "joint_ol",
+   "structure_label": "Joint, OL first",
+   "variant": "base",
+   "variant_label": "Base",
+   "label": "Joint, OL first \u00b7 Base",
+   "joint": 1,
+   "hs_first": 0,
+   "batched": 0,
+   "batch_size": 1,
+   "confidence_requested": 0,
+   "condition_OL": "A",
+   "condition_HS": "A"
+  },
+  {
+   "design_id": "joint_ol__conf",
+   "structure": "joint_ol",
+   "structure_label": "Joint, OL first",
+   "variant": "conf",
+   "variant_label": "+ Confidence",
+   "label": "Joint, OL first \u00b7 + Confidence",
+   "joint": 1,
+   "hs_first": 0,
+   "batched": 0,
+   "batch_size": 1,
+   "confidence_requested": 1,
+   "condition_OL": "A_conf",
+   "condition_HS": "A_conf"
+  },
+  {
+   "design_id": "joint_ol__batch",
+   "structure": "joint_ol",
+   "structure_label": "Joint, OL first",
+   "variant": "batch",
+   "variant_label": "Batch of 6",
+   "label": "Joint, OL first \u00b7 Batch of 6",
+   "joint": 1,
+   "hs_first": 0,
+   "batched": 1,
+   "batch_size": 6,
+   "confidence_requested": 0,
+   "condition_OL": "A_batch",
+   "condition_HS": "A_batch"
+  },
+  {
+   "design_id": "joint_ol__batch_conf",
+   "structure": "joint_ol",
+   "structure_label": "Joint, OL first",
+   "variant": "batch_conf",
+   "variant_label": "Batch of 6 + Confidence",
+   "label": "Joint, OL first \u00b7 Batch of 6 + Confidence",
+   "joint": 1,
+   "hs_first": 0,
+   "batched": 1,
+   "batch_size": 6,
+   "confidence_requested": 1,
+   "condition_OL": "A_batch_conf",
+   "condition_HS": "A_batch_conf"
+  },
+  {
+   "design_id": "joint_hs__base",
+   "structure": "joint_hs",
+   "structure_label": "Joint, HS first",
+   "variant": "base",
+   "variant_label": "Base",
+   "label": "Joint, HS first \u00b7 Base",
+   "joint": 1,
+   "hs_first": 1,
+   "batched": 0,
+   "batch_size": 1,
+   "confidence_requested": 0,
+   "condition_OL": "B",
+   "condition_HS": "B"
+  },
+  {
+   "design_id": "joint_hs__conf",
+   "structure": "joint_hs",
+   "structure_label": "Joint, HS first",
+   "variant": "conf",
+   "variant_label": "+ Confidence",
+   "label": "Joint, HS first \u00b7 + Confidence",
+   "joint": 1,
+   "hs_first": 1,
+   "batched": 0,
+   "batch_size": 1,
+   "confidence_requested": 1,
+   "condition_OL": "B_conf",
+   "condition_HS": "B_conf"
+  },
+  {
+   "design_id": "joint_hs__batch",
+   "structure": "joint_hs",
+   "structure_label": "Joint, HS first",
+   "variant": "batch",
+   "variant_label": "Batch of 6",
+   "label": "Joint, HS first \u00b7 Batch of 6",
+   "joint": 1,
+   "hs_first": 1,
+   "batched": 1,
+   "batch_size": 6,
+   "confidence_requested": 0,
+   "condition_OL": "B_batch",
+   "condition_HS": "B_batch"
+  },
+  {
+   "design_id": "joint_hs__batch_conf",
+   "structure": "joint_hs",
+   "structure_label": "Joint, HS first",
+   "variant": "batch_conf",
+   "variant_label": "Batch of 6 + Confidence",
+   "label": "Joint, HS first \u00b7 Batch of 6 + Confidence",
+   "joint": 1,
+   "hs_first": 1,
+   "batched": 1,
+   "batch_size": 6,
+   "confidence_requested": 1,
+   "condition_OL": "B_batch_conf",
+   "condition_HS": "B_batch_conf"
+  },
+  {
+   "design_id": "separate__base",
+   "structure": "separate",
+   "structure_label": "Separate calls",
+   "variant": "base",
+   "variant_label": "Base",
+   "label": "Separate calls \u00b7 Base",
+   "joint": 0,
+   "hs_first": null,
+   "batched": 0,
+   "batch_size": 1,
+   "confidence_requested": 0,
+   "condition_OL": "C.OL",
+   "condition_HS": "C.HS"
+  },
+  {
+   "design_id": "separate__conf",
+   "structure": "separate",
+   "structure_label": "Separate calls",
+   "variant": "conf",
+   "variant_label": "+ Confidence",
+   "label": "Separate calls \u00b7 + Confidence",
+   "joint": 0,
+   "hs_first": null,
+   "batched": 0,
+   "batch_size": 1,
+   "confidence_requested": 1,
+   "condition_OL": "C.OL_conf",
+   "condition_HS": "C.HS_conf"
+  },
+  {
+   "design_id": "separate__batch",
+   "structure": "separate",
+   "structure_label": "Separate calls",
+   "variant": "batch",
+   "variant_label": "Batch of 6",
+   "label": "Separate calls \u00b7 Batch of 6",
+   "joint": 0,
+   "hs_first": null,
+   "batched": 1,
+   "batch_size": 6,
+   "confidence_requested": 0,
+   "condition_OL": "C.OL_batch",
+   "condition_HS": "C.HS_batch"
+  },
+  {
+   "design_id": "separate__batch_conf",
+   "structure": "separate",
+   "structure_label": "Separate calls",
+   "variant": "batch_conf",
+   "variant_label": "Batch of 6 + Confidence",
+   "label": "Separate calls \u00b7 Batch of 6 + Confidence",
+   "joint": 0,
+   "hs_first": null,
+   "batched": 1,
+   "batch_size": 6,
+   "confidence_requested": 1,
+   "condition_OL": "C.OL_batch_conf",
+   "condition_HS": "C.HS_batch_conf"
+  }
+ ],
+ "structures": [
+  {
+   "id": "joint_ol",
+   "label": "Joint, OL first"
+  },
+  {
+   "id": "joint_hs",
+   "label": "Joint, HS first"
+  },
+  {
+   "id": "separate",
+   "label": "Separate calls"
+  }
+ ],
+ "variants": [
+  {
+   "id": "base",
+   "label": "Base",
+   "batched": 0,
+   "confidence": 0
+  },
+  {
+   "id": "conf",
+   "label": "+ Confidence",
+   "batched": 0,
+   "confidence": 1
+  },
+  {
+   "id": "batch",
+   "label": "Batch of 6",
+   "batched": 1,
+   "confidence": 0
+  },
+  {
+   "id": "batch_conf",
+   "label": "Batch of 6 + Confidence",
+   "batched": 1,
+   "confidence": 1
+  }
+ ],
+ "human_versions": [
+  {
+   "version": "A",
+   "label": "Version A",
+   "description": "OL and HS on one screen, HS shown first",
+   "joint": 1,
+   "hs_first": 1,
+   "blocked": 0,
+   "block_size": null,
+   "closest_llm_design": "joint_hs__base",
+   "match_status": "close",
+   "match_note": "Close structural match: both constructs in one judgment, HS first, one item at a time."
+  },
+  {
+   "version": "B",
+   "label": "Version B",
+   "description": "Separate screens for each tweet, HS first",
+   "joint": 0,
+   "hs_first": 1,
+   "blocked": 0,
+   "block_size": null,
+   "closest_llm_design": "separate__base",
+   "match_status": "shared",
+   "match_note": "Shares separate, one-at-a-time judgments. Separate LLM calls keep no cross-task order, so HS-first has no LLM analogue."
+  },
+  {
+   "version": "C",
+   "label": "Version C",
+   "description": "Separate screens for each tweet, OL first",
+   "joint": 0,
+   "hs_first": 0,
+   "blocked": 0,
+   "block_size": null,
+   "closest_llm_design": "separate__base",
+   "match_status": "shared",
+   "match_note": "Shares separate, one-at-a-time judgments. Separate LLM calls keep no cross-task order, so OL-first has no LLM analogue."
+  },
+  {
+   "version": "D",
+   "label": "Version D",
+   "description": "Block of 50 HS judgments, then the same 50 for OL",
+   "joint": 0,
+   "hs_first": 1,
+   "blocked": 1,
+   "block_size": 50,
+   "closest_llm_design": "separate__batch",
+   "match_status": "shared",
+   "match_note": "Shares separation and grouping, but 50 sequential human judgments differ from 6 tweets shown at once in one LLM prompt."
+  },
+  {
+   "version": "E",
+   "label": "Version E",
+   "description": "Block of 50 OL judgments, then the same 50 for HS",
+   "joint": 0,
+   "hs_first": 0,
+   "blocked": 1,
+   "block_size": 50,
+   "closest_llm_design": "separate__batch",
+   "match_status": "shared",
+   "match_note": "Shares separation and grouping, but 50 sequential human judgments differ from 6 tweets shown at once in one LLM prompt."
+  }
+ ],
+ "outcomes": [
+  {
+   "id": "OL",
+   "label": "Offensive language"
+  },
+  {
+   "id": "HS",
+   "label": "Hate speech"
+  }
+ ],
+ "counts": {
+  "tweets": 3000,
+  "llm_labels_per_outcome": {
+   "OL": 755999,
+   "HS": 755999
+  },
+  "human_ratings": 44900,
+  "human_annotators": 917
+ }
+}
