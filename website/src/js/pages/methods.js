@@ -7,7 +7,7 @@ initChrome();
 const manifest = await loadManifest();
 
 const about = {
-  "items.parquet": "The 3,000 tweets: ID, masked text, and the split each came from in the original Davidson et al. data.",
+  "items.parquet": "The 3,000 tweets: ID, text (with @-mentions masked), and the split each came from in the original Davidson et al. data.",
   "instruments.parquet": "One row per setup (84 LLM model × prompt conditions, human versions A–E, pooled humans) and label (OL, HS): prevalence with intervals, reliability, and confidence summaries.",
   "item_labels.parquet": "Each tweet's summary label under every setup, for OL and HS (long format).",
   "item_labels_wide_OL.parquet": "The OL summary labels from item_labels, one row per tweet and one column per setup.",

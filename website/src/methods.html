@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Methods & data · Annotation Sensitivity Explorer</title>
+<title>Methods & Data · Annotation Sensitivity Explorer</title>
 <meta name="description" content="Definitions, eligibility rules, provenance and limitations behind every number on the site.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='1' y='9' width='3' height='6' fill='%230072b2'/><rect x='6' y='4' width='3' height='11' fill='%23e69f00'/><rect x='11' y='7' width='3' height='8' fill='%23009e73'/></svg>">
 <link rel="stylesheet" href="./styles/site.css">
@@ -14,15 +14,15 @@
   <a class="brand" href="index.html">Annotation Sensitivity Explorer</a>
   <nav aria-label="Sections">
     <a href="index.html">Overview</a>
-    <a href="compare.html">Compare 2 conditions</a>
-    <a href="landscape.html">Landscape</a>
-    <a href="methods.html">Methods &amp; data</a>
+    <a href="compare.html">Compare 2 Conditions</a>
+    <a href="landscape.html">All Conditions</a>
+    <a href="methods.html">Methods &amp; Data</a>
   </nav>
   <button type="button" class="theme-toggle">Dark theme</button>
 </div></header>
 <main id="main">
 
-<h1>Methods, data and limitations</h1>
+<h1>Methods, Data and Limitations</h1>
 <div id="methods-body">
 <p class="lede">This page summarizes the data and definitions behind the site. Full details are in the two papers: <a href="https://aclanthology.org/2023.findings-emnlp.992/">Kern et al. (2023)</a>, <i>Annotation Sensitivity: Training Data Collection Methods Affect Model Performance</i> (Findings of EMNLP), for the human ratings, and <!-- TODO: replace href with Reiter et al. paper link --><a href="#" class="placeholder-link">Reiter et al. (2026)</a>, <i>Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance</i> (under review), for the LLM labels.</p>
 <h2>Code and source data</h2>
@@ -35,7 +35,7 @@
 <h2>Data</h2>
 <p><strong>LLM labels.</strong> Seven models (GPT-4o-mini, GPT-5.4, Mistral Large 3, Mistral Medium 3.5, Llama 3.1 8B, Llama 3.1 70B, Llama 4) labeled the 3,000 tweets under 12 task designs, three runs each, at temperature 1: 755,999 usable labels per outcome. One Llama 3.1 8B response (joint, OL-first design) could not be parsed and is excluded. A temporal re-collection of GPT-4o-mini and GPT-5.4-mini are not included.</p>
 <p><strong>Human ratings.</strong> The exact subset used in Kern et al. (2023): 44,900 ratings from 917 annotators on the same 3,000 tweets, five questionnaire versions, three ratings per tweet per version (100 ratings are missing in versions C and D). The public Hugging Face file also contains 44,250 ratings on 50 additional tweets; those are excluded.</p>
-<p><strong>Tweet text</strong> is the masked text distributed with the Kern et al. data. The 3,000 tweets are a stratified sample of the Davidson et al. (2017) corpus, so no prevalence here estimates prevalence on Twitter.</p>
+<p><strong>Tweet text</strong> is the text distributed with the Kern et al. data, with @-mentions replaced by <code>@######</code>. The 3,000 tweets are a stratified sample of the Davidson et al. (2017) corpus.</p>
 
 <h2>Definitions</h2>
 <dl>

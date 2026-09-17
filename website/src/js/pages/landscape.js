@@ -71,16 +71,19 @@ function render() {
     });
   }
   const el = document.getElementById("heatmap");
-  if (!cells.length) { el.replaceChildren(h("p", { class: "muted" }, "Select at least one model.")); return; }
+  const empty = !cells.length;
+  if (empty) el.replaceChildren(h("p", { class: "muted" }, "Select at least one model."));
   const vals = cells.map((c) => c.value);
   const extent = state.view === "diff"
     ? Math.max(0.05, ...vals.map(Math.abs))
     : [Math.min(...vals), Math.max(...vals)];
-  const plot = heatmap(el, cells, { models, designs, mode: state.view, refLabel, extent });
-  plot.addEventListener("click", () => {
-    const v = plot.value; // the datum under the pointer (set by the tip interaction)
-    if (v) location.href = `compare.html?${new URLSearchParams({ outcome: oc, a: llmId(v.model, v.design), b: humanId("pooled") })}`;
-  });
+  if (!empty) {
+    const plot = heatmap(el, cells, { models, designs, mode: state.view, refLabel, extent });
+    plot.addEventListener("click", () => {
+      const v = plot.value; // the datum under the pointer (set by the tip interaction)
+      if (v) location.href = `compare.html?${new URLSearchParams({ outcome: oc, a: llmId(v.model, v.design), b: humanId("pooled") })}`;
+    });
+  }
 
   // distribution strip: every cell and every human version on one axis
   const humans = meta.human_versions.map((v) => byInst.get(humanId(v.version)));
@@ -94,23 +97,24 @@ function render() {
       label: `${c.modelLabel} · ${c.designLabel}`, detail: `run ${i + 1}`
     }))),
     ...humans.map((r) => ({
-      row: "Human questionnaire versions", prev: r.raw_prev, source: "human", label: r.label,
+      row: "Human labels (5 versions)", prev: r.raw_prev, source: "human", label: r.label,
       detail: `${num(r.raw_n)} ratings`
     }))
   ];
   const all = rows.map((r) => r.prev);
   stripPlot(document.getElementById("dist"), rows, {
-    rowOrder: ["Human questionnaire versions", "LLM cells (model × design)", "LLM runs (3 per cell)"],
+    rowOrder: ["Human labels (5 versions)", "LLM cells (model × design)", "LLM runs (3 per cell)"],
     xDomain: [Math.min(...all) - 0.02, Math.max(...all) + 0.02]
   });
-  const range = (v) => Math.max(...v) - Math.min(...v);
-  const sd = (v) => { const m = v.reduce((a, b) => a + b, 0) / v.length; return Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / (v.length - 1)); };
   const hv = humans.map((r) => r.raw_prev);
+  const cellTiles = empty ? [["LLM cells shown", "—"]] : [
+    ["LLM cells shown", `${pct(Math.min(...cells.map((c) => c.prev)))}–${pct(Math.max(...cells.map((c) => c.prev)))}`],
+    ["Typical run-to-run SD", `${(100 * Math.sqrt(cells.reduce((a, c) => a + c.runSd ** 2, 0) / cells.length)).toFixed(2)} pp`]
+  ];
   document.getElementById("spread").replaceChildren(...[
-    ["LLM cells shown", `${pct(Math.min(...cells.map((c) => c.prev)))}–${pct(Math.max(...cells.map((c) => c.prev)))}`, `${cells.length} cells · range ${(100 * range(cells.map((c) => c.prev))).toFixed(1)} pp`],
-    ["Human versions", `${pct(Math.min(...hv))}–${pct(Math.max(...hv))}`, `5 versions · SD ${(100 * sd(hv)).toFixed(2)} pp`],
-    ["Typical run-to-run SD", `${(100 * Math.sqrt(cells.reduce((a, c) => a + c.runSd ** 2, 0) / cells.length)).toFixed(2)} pp`, "root mean square over the cells shown"]
-  ].map(([k, v, s]) => h("div", { class: "tile" }, h("div", { class: "k" }, k), h("div", { class: "v" }, v), h("div", { class: "s" }, s))));
+    ...cellTiles,
+    ["Human versions", `${pct(Math.min(...hv))}–${pct(Math.max(...hv))}`]
+  ].map(([k, v]) => h("div", { class: "tile" }, h("div", { class: "k" }, k), h("div", { class: "v" }, v))));
 
   rowsForTable = cells.map((c) => ({
     outcome: oc, model: c.model, design: c.design, design_label: c.designLabel,
