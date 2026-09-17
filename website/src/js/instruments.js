@@ -94,7 +94,7 @@ export function llmFigure(container, meta) {
         [jointPrompt("HS", "OL"), "Both in one prompt, HS first"],
         [separatePrompts(), "A separate prompt for each question"]]),
       times(),
-      factor("", "1 vs 6 tweets per screen", [
+      factor("", "1 vs 6 tweets per prompt", [
         [tweetsPerPrompt(1), "One tweet"],
         [tweetsPerPrompt(6), "Six tweets at once"]]),
       times(),

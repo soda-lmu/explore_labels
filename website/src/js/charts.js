@@ -126,18 +126,47 @@ export function heatmap(container, cells, { models, designs, mode, refLabel, ext
   return plot;
 }
 
-/** Tiny strip placing selected instruments within all instruments for an outcome. */
-export function locator(container, rows, selected) {
+/** Tiny strip placing the selected conditions (rows with .side "A"/"B") among all conditions. */
+export function locator(container, rows) {
   const w = width(container, 700);
+  const R = 4, LANES = 9, LANE_PX = 9;
+  const plotW = w - 30; // minus margins below
+  const xs = rows.map((d) => d.prev);
+  const span = Math.max(1e-6, Math.max(...xs) - Math.min(...xs)) * 1.08;
+  const minGap = span * ((2 * R + 1) / plotW);
+  // Deterministic beeswarm: sweep left to right, take the lane closest to the middle that is free.
+  const lastX = new Map();
+  const laid = [...rows].sort((a, b) => a.prev - b.prev).map((d) => {
+    let lane = 0;
+    for (let k = 0; k < LANES; k++) {
+      const cand = k % 2 ? Math.ceil(k / 2) : -Math.ceil(k / 2);
+      if (!lastX.has(cand) || d.prev - lastX.get(cand) >= minGap) { lane = cand; break; }
+      lane = cand;
+    }
+    lastX.set(lane, d.prev);
+    return { ...d, lane };
+  });
+  const picks = ["A", "B"].map((side) => laid.filter((d) => d.side === side));
+  const color = (side) => `var(--pick-${side.toLowerCase()})`;
   const plot = Plot.plot({
-    width: w, height: 100, marginLeft: 10, marginRight: 20, marginTop: 22, marginBottom: 40,
+    width: w, height: LANES * LANE_PX + 74,
+    marginLeft: 10, marginRight: 20, marginTop: 30, marginBottom: 44,
     style: baseStyle,
-    x: { label: "Where A and B sit among all 90 instruments for this outcome →", labelOffset: 34, tickFormat: (d) => `${Math.round(d * 100)}%`, nice: true },
-    y: { axis: null, domain: ["all"] },
+    x: {
+      label: "Where A and B sit among all 90 conditions for this outcome",
+      labelAnchor: "center", labelArrow: false, labelOffset: 36,
+      tickFormat: (d) => `${Math.round(d * 100)}%`, nice: true
+    },
+    y: { axis: null, domain: [-(LANES - 1) / 2 - 0.5, (LANES - 1) / 2 + 0.5] },
     marks: [
-      Plot.dot(rows, Plot.dodgeY({ x: "prev", r: 3, fill: "var(--ink-3)", fillOpacity: 0.35, anchor: "middle" })),
-      ...selected.map((s) => Plot.ruleX([s.prev], { stroke: s.color, strokeWidth: 2.5 })),
-      ...selected.map((s) => Plot.text([s], { x: "prev", text: "side", frameAnchor: "top", dy: -4, fill: "var(--ink)", fontWeight: 600 }))
+      Plot.dot(laid.filter((d) => !d.side), { x: "prev", y: "lane", r: R, fill: "var(--ink-3)", fillOpacity: 0.35 }),
+      ...picks.map((rs) => Plot.dot(rs, {
+        x: "prev", y: "lane", r: R + 2.5, fill: color(rs[0]?.side ?? "A"),
+        stroke: "var(--surface)", strokeWidth: 1.5
+      })),
+      ...picks.map((rs) => Plot.text(rs, {
+        x: "prev", y: "lane", text: "side", dy: -14, fontWeight: 600, fill: color(rs[0]?.side ?? "A")
+      }))
     ]
   });
   container.replaceChildren(plot);

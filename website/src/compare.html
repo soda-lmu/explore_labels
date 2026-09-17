@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Compare instruments · Annotation Sensitivity Explorer</title>
+<title>Compare 2 conditions · Annotation Sensitivity Explorer</title>
 <meta name="description" content="Pick two human or LLM annotation instruments and see how prevalence, agreement and item labels change.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='1' y='9' width='3' height='6' fill='%230072b2'/><rect x='6' y='4' width='3' height='11' fill='%23e69f00'/><rect x='11' y='7' width='3' height='8' fill='%23009e73'/></svg>">
 <link rel="stylesheet" href="./styles/site.css">
@@ -14,7 +14,7 @@
   <a class="brand" href="index.html">Annotation Sensitivity Explorer</a>
   <nav aria-label="Sections">
     <a href="index.html">Overview</a>
-    <a href="compare.html">Compare instruments</a>
+    <a href="compare.html">Compare 2 conditions</a>
     <a href="landscape.html">Landscape</a>
     <a href="methods.html">Methods &amp; data</a>
   </nav>
@@ -22,11 +22,12 @@
 </div></header>
 <main id="main">
 
-<h1>Compare two instruments</h1>
+<h1>Compare 2 conditions</h1>
 <p class="lede">An instrument is one way of producing labels: a human questionnaire version, or one model under one prompt design. Choose two and see what changes. Every number below is computed on the same 3,000 tweets.</p>
+<p class="benchmark-note"><i>Human labels are a benchmark, not ground truth</i></p>
 <div class="controls" id="global-controls"></div>
+<p class="small muted agg-note" id="agg-note"></p>
 <div class="grid two" id="pickers"></div>
-<div id="classification" aria-live="polite"></div>
 
 <section id="instrument-cards">
   <h2>What each instrument produces</h2>
@@ -37,7 +38,6 @@
 <section id="comparison">
   <h2>What changes between them</h2>
   <div class="grid tiles" id="cmp-tiles"></div>
-  <div class="figure" id="pair-plot"></div>
   <div class="grid two">
     <div>
       <h3>Item-level transitions</h3>
@@ -62,9 +62,8 @@
   <ol class="refs">
     <li>Kern, C., Eckman, S., Beck, J., Chew, R., Ma, B., &amp; Kreuter, F. (2023). <a href="https://aclanthology.org/2023.findings-emnlp.992/">Annotation Sensitivity: Training Data Collection Methods Affect Model Performance</a>. <i>Findings of EMNLP 2023</i>. Source of the human ratings.</li>
     <li>Reiter et al. (2026). <!-- TODO: replace href with Reiter et al. paper link --><a href="#" class="placeholder-link">Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance</a>. Under review. Source of the LLM labels.</li>
-    <li>Davidson, T., Warmsley, D., Macy, M., &amp; Weber, I. (2017). <a href="https://ojs.aaai.org/index.php/ICWSM/article/view/14955">Automated Hate Speech Detection and the Problem of Offensive Language</a>. <i>ICWSM</i>. Source of the tweets.</li>
   </ol>
-  <p>Both datasets are published here by the study authors. <span id="build-info"></span></p>
+  <p><span id="build-info"></span></p>
 </div></footer>
 <script type="module" src="./js/pages/compare.js"></script>
 </body>

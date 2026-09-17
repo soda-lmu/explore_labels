@@ -14,7 +14,7 @@
   <a class="brand" href="index.html">Annotation Sensitivity Explorer</a>
   <nav aria-label="Sections">
     <a href="index.html">Overview</a>
-    <a href="compare.html">Compare instruments</a>
+    <a href="compare.html">Compare 2 conditions</a>
     <a href="landscape.html">Landscape</a>
     <a href="methods.html">Methods &amp; data</a>
   </nav>
@@ -23,7 +23,7 @@
 <main id="main">
 
 <h1>Same tweets, different labels</h1>
-<p class="lede">Does the way you ask for a label change the label you get? We took 3,000 tweets from a widely used hate speech dataset (<a href="https://ojs.aaai.org/index.php/ICWSM/article/view/14955">Davidson et al., 2017</a>) and had them labeled for <span class="kw kw-ol">offensive language (OL)</span> and <span class="kw kw-hs">hate speech (HS)</span>, by people and by LLMs, and changed how the questions were asked.</p>
+<p class="lede">Does the way you ask for a label change the label you get? We took 3,000 tweets from a widely used hate speech dataset and had them labeled for <span class="kw kw-ol">offensive language (OL)</span> and <span class="kw kw-hs">hate speech (HS)</span>, by people and by LLMs, and changed how the questions were asked.</p>
 <p>917 people were randomly assigned to one of <a href="#human-versions">five versions of the labeling task</a>. Seven LLMs labeled the same tweets under <a href="#llm-designs">twelve prompt conditions</a>. Below, you can see how much these choices move the labels. Diagrams of each setup are at the bottom of the page.</p>
 
 <section id="trap" class="anchor-target">
@@ -55,9 +55,8 @@
   <ol class="refs">
     <li>Kern, C., Eckman, S., Beck, J., Chew, R., Ma, B., &amp; Kreuter, F. (2023). <a href="https://aclanthology.org/2023.findings-emnlp.992/">Annotation Sensitivity: Training Data Collection Methods Affect Model Performance</a>. <i>Findings of EMNLP 2023</i>. Source of the human ratings.</li>
     <li>Reiter et al. (2026). <!-- TODO: replace href with Reiter et al. paper link --><a href="#" class="placeholder-link">Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance</a>. Under review. Source of the LLM labels.</li>
-    <li>Davidson, T., Warmsley, D., Macy, M., &amp; Weber, I. (2017). <a href="https://ojs.aaai.org/index.php/ICWSM/article/view/14955">Automated Hate Speech Detection and the Problem of Offensive Language</a>. <i>ICWSM</i>. Source of the tweets.</li>
   </ol>
-  <p>Both datasets are published here by the study authors. <span id="build-info"></span></p>
+  <p><span id="build-info"></span></p>
 </div></footer>
 <script type="module" src="./js/pages/index.js"></script>
 </body>

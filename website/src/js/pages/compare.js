@@ -1,9 +1,9 @@
 import { loadMeta, loadInstruments, loadPairwise, loadItemLabels, loadItems, downloadText } from "../data.js";
 import {
-  h, initChrome, segmented, control, instrumentPicker, instrumentLabel, instrumentColor,
-  callout, contentWarning, MODEL_SYMBOL
+  h, initChrome, segmented, control, instrumentPicker, instrumentLabel,
+  contentWarning
 } from "../ui.js";
-import { pairPlot, locator } from "../charts.js";
+import { locator } from "../charts.js";
 import {
   readState, writeState, parseInstrument, classifyComparison, lookupPair, pairIndex,
   pct, num, dec, signedPp, bp, toCSV
@@ -48,8 +48,8 @@ function card(side, r) {
     !isHuman ? ["Spread of the 3 run prevalences (SD)", `${(100 * r.run_sd).toFixed(2)} pp`] : null,
     !isHuman ? ["Confidence scores", r.conf_requested ? `requested · valid for ${pct(r.conf_valid_rate)} · mean ${r.conf_mean.toFixed(0)}` : "not requested in this design"] : null
   ].filter(Boolean);
-  return h("div", { class: "card" },
-    h("h3", {}, h("span", { style: `color:${instrumentColor(meta, r.instrument)}` }, "■ "), `${side}: ${instrumentLabel(meta, r.instrument)}`),
+  return h("div", { class: `card card-${side.toLowerCase()}` },
+    h("h3", {}, h("span", { class: `pick-dot pick-${side.toLowerCase()}`, "aria-hidden": "true" }), `${side}: ${instrumentLabel(meta, r.instrument)}`),
     h("div", { class: "table-wrap" }, h("table", {}, h("tbody", {}, rows.map(([k, v]) => h("tr", {}, h("th", { scope: "row", style: "text-align:left;font-weight:500" }, k), h("td", { style: "white-space:normal" }, v)))))));
 }
 
@@ -94,42 +94,35 @@ function update() {
   const { outcome: oc, a, b, agg } = state;
   const A = byKey.get(`${oc}|${a}`), B = byKey.get(`${oc}|${b}`);
   const cls = classifyComparison(a, b, meta);
-  const notes = [...cls.notes];
-  if (agg === "raw") {
-    const pa = parseInstrument(a), pb = parseInstrument(b);
-    if (pa.source !== pb.source) notes.push("Label-level prevalence counts individual human ratings on one side and individual LLM run labels on the other. Switch to item labels for a like-for-like per-tweet comparison.");
-  }
-  document.getElementById("classification").replaceChildren(callout(cls.level, cls.title, notes));
   document.getElementById("cards").replaceChildren(card("A", A), card("B", B));
 
+  document.getElementById("agg-note").textContent = agg === "raw"
+    ? "Every label: each label separately, ~9,000 per condition"
+    : "Item labels: labels aggregated to item label (majority); ~3,000 per condition";
+
   const key = agg === "raw" ? "raw" : "item";
-  const all = inst.filter((r) => r.outcome === oc).map((r) => ({ prev: r[`${key}_prev`] }));
-  locator(document.getElementById("locator"), all, [
-    { side: "A", prev: A[`${key}_prev`], color: instrumentColor(meta, a) },
-    { side: "B", prev: B[`${key}_prev`], color: instrumentColor(meta, b) }
-  ]);
+  const all = inst.filter((r) => r.outcome === oc).map((r) => ({
+    prev: r[`${key}_prev`],
+    side: r.instrument === a ? "A" : r.instrument === b ? "B" : null
+  }));
+  locator(document.getElementById("locator"), all);
 
   const pair = a === b ? null : lookupPair(index, oc, a, b);
   const pa = A[`${key}_prev`], pb = B[`${key}_prev`];
   const diff = pb - pa;
   const flips = pair ? pair.n10 + pair.n01 : NaN;
   const tiles = [
-    ["Prevalence A", pct(pa), agg === "raw" ? `${num(A.raw_n)} labels` : `${num(A.item_n)} tweets`],
-    ["Prevalence B", pct(pb), agg === "raw" ? `${num(B.raw_n)} labels` : `${num(B.item_n)} tweets`],
+    ["Prevalence A", pct(pa), agg === "raw" ? `${num(A.raw_n)} labels` : `${num(A.item_n)} tweets`, "a"],
+    ["Prevalence B", pct(pb), agg === "raw" ? `${num(B.raw_n)} labels` : `${num(B.item_n)} tweets`, "b"],
     ["Difference B − A", signedPp(diff), bp(diff)],
     ["Cohen's κ", pair ? dec(pair.kappa) : "—", "item labels, shared tweets"],
     ["Raw agreement", pair ? pct(pair.agree) : "—", pair ? `${num(pair.n)} shared tweets` : ""],
     ["Tweets that flip", pair ? num(flips) : "—", pair ? `${pct(flips / pair.n)} of shared tweets` : ""]
   ];
-  document.getElementById("cmp-tiles").replaceChildren(...tiles.map(([k, v, s]) =>
-    h("div", { class: "tile" }, h("div", { class: "k" }, k), h("div", { class: "v" }, v), h("div", { class: "s" }, s))));
+  document.getElementById("cmp-tiles").replaceChildren(...tiles.map(([k, v, sub, pick]) =>
+    h("div", { class: `tile${pick ? ` tile-pick pick-${pick}` : ""}` },
+      h("div", { class: "k" }, k), h("div", { class: "v" }, v), h("div", { class: "s" }, sub))));
 
-  const sym = (id) => { const p = parseInstrument(id); return p.source === "human" ? "diamond" : MODEL_SYMBOL[p.model]; };
-  const ci = (r) => agg === "raw" ? [r.raw_lo, r.raw_hi] : [r.item_lo, r.item_hi];
-  pairPlot(document.getElementById("pair-plot"), [
-    { side: "A", prev: pa, lo: ci(A)[0], hi: ci(A)[1], color: instrumentColor(meta, a), symbol: sym(a), label: instrumentLabel(meta, a), n: agg === "raw" ? A.raw_n : A.item_n },
-    { side: "B", prev: pb, lo: ci(B)[0], hi: ci(B)[1], color: instrumentColor(meta, b), symbol: sym(b), label: instrumentLabel(meta, b), n: agg === "raw" ? B.raw_n : B.item_n }
-  ]);
 
   const m = document.getElementById("matrix");
   if (pair) {
@@ -137,10 +130,10 @@ function update() {
     m.replaceChildren(h("div", { class: "table-wrap" }, h("table", { class: "matrix" },
       h("caption", { class: "small muted", style: "caption-side:bottom;text-align:left;padding-top:.4rem" },
         `Rows: A's item label. Columns: B's item label. Shaded cells are flips. ${outcomeLabel(oc)}.`),
-      h("thead", {}, h("tr", {}, h("th", {}, ""), h("th", { scope: "col" }, "B negative"), h("th", { scope: "col" }, "B positive"))),
+      h("thead", {}, h("tr", {}, h("th", {}, ""), h("th", { scope: "col", class: "pick-b" }, "B negative"), h("th", { scope: "col", class: "pick-b" }, "B positive"))),
       h("tbody", {},
-        h("tr", {}, h("th", { scope: "row" }, "A negative"), cell(pair.n00, false), cell(pair.n01, true)),
-        h("tr", {}, h("th", { scope: "row" }, "A positive"), cell(pair.n10, true), cell(pair.n11, false))))));
+        h("tr", {}, h("th", { scope: "row", class: "pick-a" }, "A negative"), cell(pair.n00, false), cell(pair.n01, true)),
+        h("tr", {}, h("th", { scope: "row", class: "pick-a" }, "A positive"), cell(pair.n10, true), cell(pair.n11, false))))));
   } else {
     m.replaceChildren(h("p", { class: "muted" }, "Choose two different instruments."));
   }
