@@ -1,35 +1,30 @@
-import { loadMeta, loadInstruments, loadManifest } from "../data.js";
+import { loadManifest } from "../data.js";
 import { h, initChrome } from "../ui.js";
 import { table } from "../charts.js";
-import { pct, num } from "../logic.js";
+import { num } from "../logic.js";
 
 initChrome();
-const [meta, inst, manifest] = await Promise.all([loadMeta(), loadInstruments(), loadManifest()]);
+const manifest = await loadManifest();
 
-const kern = { A: [51.6, 26.8], B: [58.8, 29.6], C: [58.5, 28.2], D: [54.4, 33.5], E: [59.0, 31.8] };
-const get = (oc, v) => inst.find((r) => r.outcome === oc && r.instrument === `human:${v}`);
-const rows = meta.human_versions.map((v) => ({
-  version: v.version,
-  n: get("OL", v.version).raw_n,
-  ol: get("OL", v.version).raw_prev, ol_pub: kern[v.version][0],
-  hs: get("HS", v.version).raw_prev, hs_pub: kern[v.version][1]
-}));
+const about = {
+  "items.parquet": "The 3,000 tweets: ID, masked text, and the split each came from in the original Davidson et al. data.",
+  "instruments.parquet": "One row per setup (84 LLM model × prompt conditions, human versions A–E, pooled humans) and label (OL, HS): prevalence with intervals, reliability, and confidence summaries.",
+  "item_labels.parquet": "Each tweet's summary label under every setup, for OL and HS (long format).",
+  "item_labels_wide_OL.parquet": "The OL summary labels from item_labels, one row per tweet and one column per setup.",
+  "item_labels_wide_HS.parquet": "The HS summary labels from item_labels, one row per tweet and one column per setup.",
+  "pairwise.parquet": "Agreement between every pair of setups for each label: raw agreement, Cohen's κ, 2×2 counts, and both prevalences.",
+  "run_prevalence.parquet": "Share of positive labels in each LLM run (model × prompt condition × run), for each label.",
+  "item_profiles.parquet": "Per tweet and label: share of positive labels among people and among LLMs, the pooled human label, and how much the label changes across human versions and across LLM setups.",
+  "llm_annotations.parquet": "Every LLM label: tweet, label type, model, prompt condition, run, label, and confidence (where requested).",
+  "human_annotations.parquet": "Every human rating: tweet, version, annotator (site-specific ID), rating slot, label type, and label."
+};
+
 document.getElementById("manifest").append(
-  h("h3", {}, "Kern et al. (2023), Table 1: this site vs. published"),
-  table(rows, [
-    { key: "version", label: "Version" },
-    { key: "n", label: "OL ratings", format: num },
-    { key: "ol", label: "OL (site)", format: (v) => pct(v) },
-    { key: "ol_pub", label: "OL (published)", format: (v) => `${v.toFixed(1)}%` },
-    { key: "hs", label: "HS (site)", format: (v) => pct(v) },
-    { key: "hs_pub", label: "HS (published)", format: (v) => `${v.toFixed(1)}%` }
-  ]),
-  h("h3", {}, "Data files"),
-  table(Object.entries(manifest.files).map(([name, f]) => ({ name, ...f })), [
+  table(Object.entries(manifest.files).map(([name, f]) => ({ name, about: about[name] ?? "", ...f })), [
     { key: "name", label: "File", format: (v) => h("a", { href: `data/${v}`, download: true }, v) },
+    { key: "about", label: "Contents", format: (v) => h("span", { class: "desc" }, v) },
     { key: "rows", label: "Rows", format: num },
-    { key: "bytes", label: "Size", format: (v) => `${(v / 1e6).toFixed(2)} MB` },
-    { key: "sha256", label: "SHA-256", format: (v) => h("code", {}, v.slice(0, 12)) }
+    { key: "bytes", label: "Size", format: (v) => `${(v / 1e6).toFixed(2)} MB` }
   ]),
-  h("p", { class: "small muted" }, `Built ${manifest.built} from `, h("a", { href: manifest.source_repo }, manifest.source_repo), ". Annotator IDs are replaced by website-specific numbers.")
+  h("p", { class: "small muted" }, `Built ${manifest.built} from `, h("a", { href: manifest.source_repo }, manifest.source_repo), ". Annotator IDs are replaced by website-specific numbers. All files are Parquet.")
 );

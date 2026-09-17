@@ -76,14 +76,14 @@ function tweetsPerPrompt(n) {
 }
 function answer(conf) {
   const reply = conf ? "OL: yes · 90%" : "OL: yes";
-  return card(`<text x="4" y="30" class="lab">Model answers</text>` +
-    `<rect x="0.75" y="38" width="102.5" height="30" rx="14" class="reply"/>` +
-    `<text x="52" y="58" text-anchor="middle" class="reply-t">${reply}</text>`, 104, 104);
+  return card(`<text x="4" y="34" class="lab">Model answers</text>` +
+    `<rect x="0.75" y="42" width="102.5" height="30" rx="14" class="reply"/>` +
+    `<text x="52" y="62" text-anchor="middle" class="reply-t">${reply}</text>`, 104, 104);
 }
 
 export function llmFigure(container, meta) {
   const factor = (n, title, opts) => h("div", { class: "factor" },
-    h("h4", {}, h("span", { class: "fn" }, n), title),
+    h("h4", {}, n ? h("span", { class: "fn" }, n) : null, title),
     h("div", { class: "opts" }, opts.map(([svg, cap]) =>
       h("figure", { class: "opt" }, h("div", { html: svg }), h("figcaption", {}, cap)))));
   const times = () => h("div", { class: "times", "aria-hidden": "true" }, "×");
@@ -94,13 +94,13 @@ export function llmFigure(container, meta) {
         [jointPrompt("HS", "OL"), "Both in one prompt, HS first"],
         [separatePrompts(), "A separate prompt for each question"]]),
       times(),
-      factor("2", "numbers of tweets per prompt", [
+      factor("", "1 vs 6 tweets per screen", [
         [tweetsPerPrompt(1), "One tweet"],
         [tweetsPerPrompt(6), "Six tweets at once"]]),
       times(),
       factor("2", "answer formats", [
         [answer(false), "Label only"],
-        [answer(true), "Label plus confidence (0–100%)"]])),
+        [answer(true), "Label + confidence"]])),
     h("p", { class: "factors-sum" },
       h("strong", {}, "= 12 conditions. "),
       `Every condition was run 3 times with each of ${meta.models.length} models: `,

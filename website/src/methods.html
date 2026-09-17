@@ -24,6 +24,14 @@
 
 <h1>Methods, data and limitations</h1>
 <div id="methods-body">
+<p class="lede">This page summarizes the data and definitions behind the site. Full details are in the two papers: <a href="https://aclanthology.org/2023.findings-emnlp.992/">Kern et al. (2023)</a>, <i>Annotation Sensitivity: Training Data Collection Methods Affect Model Performance</i> (Findings of EMNLP), for the human ratings, and <!-- TODO: replace href with Reiter et al. paper link --><a href="#" class="placeholder-link">Reiter et al. (2026)</a>, <i>Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance</i> (under review), for the LLM labels.</p>
+<h2>Code and source data</h2>
+<ul>
+<li>LLM labels and analysis code (Reiter et al.): <a href="https://github.com/AnonymousACLSubmission/llm-annotation-sensitivity">github.com/AnonymousACLSubmission/llm-annotation-sensitivity</a></li>
+<li>Human ratings and analysis code (Kern et al.): <a href="https://github.com/chkern/tweet-annotation-sensitivity">github.com/chkern/tweet-annotation-sensitivity</a></li>
+<li>Human ratings on Hugging Face: <a href="https://huggingface.co/datasets/soda-lmu/tweet-annotation-sensitivity-2">soda-lmu/tweet-annotation-sensitivity-2</a></li>
+</ul>
+
 <h2>Data</h2>
 <p><strong>LLM labels.</strong> Seven models (GPT-4o-mini, GPT-5.4, Mistral Large 3, Mistral Medium 3.5, Llama 3.1 8B, Llama 3.1 70B, Llama 4) labeled the 3,000 tweets under 12 task designs, three runs each, at temperature 1: 755,999 usable labels per outcome. One Llama 3.1 8B response (joint, OL-first design) could not be parsed and is excluded. A temporal re-collection of GPT-4o-mini and GPT-5.4-mini are not included.</p>
 <p><strong>Human ratings.</strong> The exact subset used in Kern et al. (2023): 44,900 ratings from 917 annotators on the same 3,000 tweets, five questionnaire versions, three ratings per tweet per version (100 ratings are missing in versions C and D). The public Hugging Face file also contains 44,250 ratings on 50 additional tweets; those are excluded.</p>
@@ -42,8 +50,7 @@
 <h2>Comparing humans and LLMs</h2>
 <p>Human version A (both constructs on one screen, HS first) is a close structural match for the LLM design “Joint, HS first · Base”. Versions B–E share features with separate LLM calls, but separate calls keep no order between constructs, and a block of 50 sequential human judgments is not the same as six tweets in one prompt. The five human versions were answered by different annotator panels, so differences between them include panel sampling variation.</p>
 
-<h2>Verification</h2>
-<p>The data build stops unless the web data reproduce the paper's per-cell prevalences, all 168 within-design Fleiss κ values, all 924 cross-design Cohen κ values, the κ values against the human reference, and Kern et al.'s Table 1. The last check is below.</p>
+<h2>Data files</h2>
 <div id="manifest"></div>
 
 <h2>Known limitations of this build</h2>
@@ -55,9 +62,13 @@
 </div>
 </main>
 <footer><div class="inner">
-  Tweets from <a href="https://ojs.aaai.org/index.php/ICWSM/article/view/14955">Davidson et al. (2017)</a>, “Automated Hate Speech Detection and the Problem of Offensive Language,” <i>ICWSM</i>.
-  Data: LLM annotations from “Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance” (2026, under review);
-  human ratings from Kern et al. (2023), <i>Annotation Sensitivity</i>. Both datasets are published here by the study authors. <span id="build-info"></span>
+  <h2 class="refs-h">References</h2>
+  <ol class="refs">
+    <li>Kern, C., Eckman, S., Beck, J., Chew, R., Ma, B., &amp; Kreuter, F. (2023). <a href="https://aclanthology.org/2023.findings-emnlp.992/">Annotation Sensitivity: Training Data Collection Methods Affect Model Performance</a>. <i>Findings of EMNLP 2023</i>. Source of the human ratings.</li>
+    <li>Reiter et al. (2026). <!-- TODO: replace href with Reiter et al. paper link --><a href="#" class="placeholder-link">Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance</a>. Under review. Source of the LLM labels.</li>
+    <li>Davidson, T., Warmsley, D., Macy, M., &amp; Weber, I. (2017). <a href="https://ojs.aaai.org/index.php/ICWSM/article/view/14955">Automated Hate Speech Detection and the Problem of Offensive Language</a>. <i>ICWSM</i>. Source of the tweets.</li>
+  </ol>
+  <p>Both datasets are published here by the study authors. <span id="build-info"></span></p>
 </div></footer>
 <script type="module" src="./js/pages/methods.js"></script>
 </body>
