@@ -1,5 +1,5 @@
 // Loading the precomputed web data package (src/public/data).
-import { asyncBufferFromUrl, parquetReadObjects } from "hyparquet";
+import { parquetReadObjects } from "hyparquet";
 
 const BASE = new URL("data/", document.baseURI).href;
 const cache = new Map();
@@ -15,7 +15,13 @@ export async function readParquet(name, columns) {
   const key = `${name}|${columns ? columns.join(",") : "*"}`;
   if (!cache.has(key)) {
     cache.set(key, (async () => {
-      const file = await asyncBufferFromUrl({ url: BASE + name });
+      // These files are all small (a few KB to a few MB), so fetch the whole
+      // thing rather than using hyparquet's lazy byte-range reader. Netlify's
+      // edge cache can return a full 200 response instead of the requested
+      // 206 partial range on a cold cache hit, which corrupts the footer
+      // parse ("footer != PAR1") for range-based reads.
+      const buf = await fetch(BASE + name).then((r) => r.arrayBuffer());
+      const file = { byteLength: buf.byteLength, slice: (start, end) => buf.slice(start, end) };
       return normalize(await parquetReadObjects({ file, columns }));
     })());
   }
