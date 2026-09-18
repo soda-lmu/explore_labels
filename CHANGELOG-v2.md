@@ -115,9 +115,10 @@ site still comes from the validated build.
   yellow with 1.6:1 contrast on the light surface. Moving one hue was the best available trade.
 
   Residual: OpenAI blue `#0072b2` and the OL chip `#56b4e9` are still the same hue family,
-  separated mainly by lightness. The cheaper complete fix is the other direction — the OL/HS
-  chips carry their own "OL"/"HS" text, so they do not need hue at all, which would let the
-  model palette stay exactly as the paper prints it. Left for Stephanie to decide.
+  separated mainly by lightness. **Decided 2026-09-18: the OL/HS chip colours stay.** They
+  match Kern et al. Fig. 1, the chips carry their own "OL"/"HS" text so hue is not load-bearing,
+  and the two encodings never share a figure — chips appear only in the instrument diagrams,
+  family colour only in the charts. The key on the overview states which is which.
 
 ## Also
 
