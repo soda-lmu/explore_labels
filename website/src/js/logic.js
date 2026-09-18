@@ -22,25 +22,25 @@ export function classifyComparison(a, b, meta) {
   const A = parseInstrument(a);
   const B = parseInstrument(b);
   const notes = [];
-  if (!A || !B) return { kind: "invalid", title: "Choose two instruments", notes, level: "caution" };
+  if (!A || !B) return { kind: "invalid", title: "Choose two setups", notes, level: "caution" };
   if (a === b) {
     return {
       kind: "same",
-      title: "Same instrument on both sides",
-      notes: ["Pick a different instrument for B. Repeat-run reliability for one instrument is shown in its card."],
+      title: "The same setup on both sides",
+      notes: ["Pick a different setup for B. The agreement within a single setup is shown on its card."],
       level: "caution"
     };
   }
   const versions = Object.fromEntries(meta.human_versions.map((v) => [v.version, v]));
   if (A.source === "llm" && B.source === "llm") {
     if (A.model === B.model) {
-      return { kind: "llm-design", title: "Task-design contrast (same model)", notes, level: "ok" };
+      return { kind: "llm-design", title: "Prompt-recipe contrast (same model)", notes, level: "ok" };
     }
     if (A.design === B.design) {
-      return { kind: "llm-model", title: "Model contrast (same task design)", notes, level: "ok" };
+      return { kind: "llm-model", title: "Model contrast (same prompt recipe)", notes, level: "ok" };
     }
-    notes.push("Both the model and the task design differ, so the difference mixes two sources of variation.");
-    return { kind: "llm-both", title: "Model and task design both differ", notes, level: "caution" };
+    notes.push("Both the model and the prompt recipe differ, so the difference mixes two sources of variation and cannot be attributed to either.");
+    return { kind: "llm-both", title: "Model and prompt recipe both differ", notes, level: "caution" };
   }
   if (A.source === "human" && B.source === "human") {
     if (A.version === "pooled" || B.version === "pooled") {
@@ -68,8 +68,31 @@ export function classifyComparison(a, b, meta) {
       level: close ? "ok" : "caution"
     };
   }
-  notes.push(`This LLM design is not the closest analogue of human Version ${H.version}; the two instruments differ in more than one feature.`);
+  notes.push(`This prompt recipe is not the closest analogue of human Version ${H.version}; the two setups differ in more than one feature, so the gap is not a clean human-versus-LLM comparison.`);
   return { kind: "human-llm-none", title: "No direct design analogue", notes, level: "caution" };
+}
+
+/**
+ * The design that differs from `designId` in exactly one factor.
+ * factor: "batched" | "confidence". Returns null if no such design exists.
+ * Replaces string surgery on the design id, which silently produced the wrong
+ * contrast for variants that combine both factors.
+ */
+export function partnerDesign(designId, meta, factor) {
+  const d = meta.designs.find((x) => x.design_id === designId);
+  if (!d) return null;
+  const v = meta.variants.find((x) => x.id === d.variant);
+  if (!v) return null;
+  const want = { batched: v.batched, confidence: v.confidence };
+  want[factor] = v[factor] ? 0 : 1;
+  const target = meta.variants.find((x) => x.batched === want.batched && x.confidence === want.confidence);
+  return target ? `${d.structure}__${target.id}` : null;
+}
+
+/** Plain-language gloss for a between-setup kappa, anchored on the flip count. */
+export function kappaGloss(flips, n) {
+  if (!Number.isFinite(flips) || !n) return "";
+  return `${num(flips)} of ${num(n)} tweets get a different label`;
 }
 
 /** Transition counts between two aligned label arrays (null/NaN = missing). */
@@ -110,21 +133,12 @@ export function pairIndex(rows) {
 // ------------------------------------------------------------------ format
 export const pct = (x, d = 1) => (x == null || Number.isNaN(x) ? "—" : `${(100 * x).toFixed(d)}%`);
 export const num = (x) => (x == null || Number.isNaN(x) ? "—" : Number(x).toLocaleString("en-US"));
-export const dec = (x, d = 2) => {
-  if (x == null || Number.isNaN(x)) return "—";
-  const s = Number(x).toFixed(d);
-  return s.replace(/^(-?)0\./, "$1.");
-};
+export const dec = (x, d = 2) => (x == null || Number.isNaN(x) ? "—" : Number(x).toFixed(d));
 export function signedPp(diff, d = 1) {
   if (diff == null || Number.isNaN(diff)) return "—";
   const pp = 100 * diff;
   const sign = pp > 0 ? "+" : pp < 0 ? "−" : "±";
   return `${sign}${Math.abs(pp).toFixed(d)} pp`;
-}
-export function bp(diff) {
-  if (diff == null || Number.isNaN(diff)) return "—";
-  const v = Math.round(10000 * diff);
-  return `${v > 0 ? "+" : v < 0 ? "−" : "±"}${Math.abs(v).toLocaleString("en-US")} bp`;
 }
 
 // ------------------------------------------------------------------- state

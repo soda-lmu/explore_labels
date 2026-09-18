@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Compare 2 Conditions · Annotation Sensitivity Explorer</title>
-<meta name="description" content="Pick two human or LLM annotation instruments and see how prevalence, agreement and item labels change.">
+<title>Compare two setups · Annotation Sensitivity Explorer</title>
+<meta name="description" content="Pick two ways of producing labels and see how many of the same 3,000 tweets end up labeled differently.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='1' y='9' width='3' height='6' fill='%230072b2'/><rect x='6' y='4' width='3' height='11' fill='%23e69f00'/><rect x='11' y='7' width='3' height='8' fill='%23009e73'/></svg>">
 <link rel="stylesheet" href="./styles/site.css">
 </head>
@@ -14,46 +14,59 @@
   <a class="brand" href="index.html">Annotation Sensitivity Explorer</a>
   <nav aria-label="Sections">
     <a href="index.html">Overview</a>
-    <a href="compare.html">Compare 2 Conditions</a>
-    <a href="landscape.html">All Conditions</a>
+    <a href="compare.html">Compare two setups</a>
+    <a href="landscape.html">Every setup</a>
     <a href="methods.html">Methods &amp; Data</a>
   </nav>
   <button type="button" class="theme-toggle">Dark theme</button>
 </div></header>
 <main id="main">
 
-<h1>Compare 2 Conditions</h1>
-<p class="lede">An instrument is one way of producing labels: a human questionnaire version, or one model under one prompt design. Choose two and see what changes. Every number below is computed on the same 3,000 tweets.</p>
-<p class="benchmark-note"><i>Human labels are a benchmark, not ground truth</i></p>
+<h1>Compare two setups</h1>
+<p class="lede">A <b>setup</b> is one way of producing labels: a human questionnaire version, or one model under one prompt recipe. Choose two and see how many of the same 3,000 tweets end up labeled differently.</p>
+
+<div class="starters">
+  <p class="small muted" id="starters-label">Not sure where to start? Try one of these:</p>
+  <div class="chips" id="starters"></div>
+</div>
+
 <div class="controls" id="global-controls"></div>
-<p class="small muted agg-note" id="agg-note"></p>
 <div class="grid two" id="pickers"></div>
+<div class="controls" id="swap-slot"></div>
 
 <section id="instrument-cards">
-  <h2>What each instrument produces</h2>
+  <h2>What each setup produces</h2>
+  <div id="guardrail"></div>
   <div class="grid two" id="cards"></div>
   <div class="figure" id="locator"></div>
 </section>
 
 <section id="comparison">
   <h2>What changes between them</h2>
+  <div id="headline"></div>
   <div class="grid tiles" id="cmp-tiles"></div>
+  <p class="small muted" id="method-short"></p>
+  <div class="controls" id="agg-control"></div>
+  <p class="small muted agg-note" id="agg-note"></p>
   <div class="grid two">
     <div>
-      <h3>Item-level transitions</h3>
+      <h3>Which tweets the two setups disagree on</h3>
       <div id="matrix"></div>
     </div>
     <div>
-      <h3>How to read this</h3>
-      <p class="small" id="method-statement"></p>
+      <h3>Save or share this comparison</h3>
       <div class="controls">
         <button type="button" id="download">Download comparison (CSV)</button>
         <button type="button" id="copy-link">Copy link to this comparison</button>
       </div>
       <p class="small muted" id="copy-status" aria-live="polite"></p>
+      <details class="method-details">
+        <summary>More on the statistics</summary>
+        <p class="small" id="method-long"></p>
+      </details>
     </div>
   </div>
-  <h3>Tweets that flip</h3>
+  <h3>Tweets that get a different label</h3>
   <div id="examples"></div>
 </section>
 </main>
@@ -61,7 +74,7 @@
   <h2 class="refs-h">References</h2>
   <ol class="refs">
     <li>Kern, C., Eckman, S., Beck, J., Chew, R., Ma, B., &amp; Kreuter, F. (2023). <a href="https://aclanthology.org/2023.findings-emnlp.992/">Annotation Sensitivity: Training Data Collection Methods Affect Model Performance</a>. <i>Findings of EMNLP 2023</i>. Source of the human ratings.</li>
-    <li>Reiter et al. (2026). <!-- TODO: replace href with Reiter et al. paper link --><a href="#" class="placeholder-link">Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance</a>. Under review. Source of the LLM labels.</li>
+    <li>Reiter et al. (2026). <!-- TODO: link once the paper is public --><i class="placeholder-cite">Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance</i>. Under review. Source of the LLM labels.</li>
   </ol>
   <p><span id="build-info"></span></p>
 </div></footer>

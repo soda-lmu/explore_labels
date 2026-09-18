@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>All Conditions · Annotation Sensitivity Explorer</title>
-<meta name="description" content="Prevalence for every model and task design, next to the five human questionnaire versions.">
+<title>Every setup · Annotation Sensitivity Explorer</title>
+<meta name="description" content="What moves the label most, and prevalence for every model and prompt recipe next to the five human questionnaire versions.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='1' y='9' width='3' height='6' fill='%230072b2'/><rect x='6' y='4' width='3' height='11' fill='%23e69f00'/><rect x='11' y='7' width='3' height='8' fill='%23009e73'/></svg>">
 <link rel="stylesheet" href="./styles/site.css">
 </head>
@@ -14,26 +14,36 @@
   <a class="brand" href="index.html">Annotation Sensitivity Explorer</a>
   <nav aria-label="Sections">
     <a href="index.html">Overview</a>
-    <a href="compare.html">Compare 2 Conditions</a>
-    <a href="landscape.html">All Conditions</a>
+    <a href="compare.html">Compare two setups</a>
+    <a href="landscape.html">Every setup</a>
     <a href="methods.html">Methods &amp; Data</a>
   </nav>
   <button type="button" class="theme-toggle">Dark theme</button>
 </div></header>
 <main id="main">
 
-<h1>All Conditions</h1>
-<p class="lede">How wide is the set of results across defensible choices? Each cell is one model under one task design, averaged over three runs. Human labels sit on the same scale.</p>
+<h1>Every setup</h1>
+<p class="lede">How wide is the set of results across defensible choices? Every one of the 90 setups labeled the same 3,000 tweets. A <b>setup</b> is one model under one prompt recipe, averaged over three runs, or one human questionnaire version.</p>
 <div class="controls" id="controls"></div>
+
+<section id="what-moves" class="anchor-target">
+  <h2>What moves the label most?</h2>
+  <p>Each bar is the spread in prevalence you get by changing one thing and holding everything else fixed. Longer means that choice matters more.</p>
+  <div class="figure" id="what-moves-fig"><p class="loading">Loading…</p></div>
+  <div id="what-moves-table"></div>
+  <div id="what-moves-takeaway"></div>
+</section>
+
 <h2>Humans and models on one axis</h2>
-<p class="question">Where do the five human versions fall relative to the LLM cells?</p>
+<p class="question">Where do the five human versions fall relative to the LLM setups?</p>
 <div id="dist-legend"></div>
 <div class="figure" id="dist"></div>
 <div class="grid tiles" id="spread"></div>
 
-<h2>Prevalence by model and design</h2>
+<h2>Prevalence by model and prompt recipe</h2>
+<p class="small muted">Numbers are the percent of tweets given the label. Hover or focus a cell for the three run-level prevalences; click it, or press Enter, to open that setup in the comparison view.</p>
 <div class="figure" id="heatmap"><p class="loading">Loading…</p></div>
-<p class="small muted">Hover a cell for the three run-level prevalences. Click a cell to open it in the comparison view.</p>
+<div id="heatmap-takeaway"></div>
 <details>
   <summary>Table view</summary>
   <div id="table"></div>
@@ -44,7 +54,7 @@
   <h2 class="refs-h">References</h2>
   <ol class="refs">
     <li>Kern, C., Eckman, S., Beck, J., Chew, R., Ma, B., &amp; Kreuter, F. (2023). <a href="https://aclanthology.org/2023.findings-emnlp.992/">Annotation Sensitivity: Training Data Collection Methods Affect Model Performance</a>. <i>Findings of EMNLP 2023</i>. Source of the human ratings.</li>
-    <li>Reiter et al. (2026). <!-- TODO: replace href with Reiter et al. paper link --><a href="#" class="placeholder-link">Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance</a>. Under review. Source of the LLM labels.</li>
+    <li>Reiter et al. (2026). <!-- TODO: link once the paper is public --><i class="placeholder-cite">Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance</i>. Under review. Source of the LLM labels.</li>
   </ol>
   <p><span id="build-info"></span></p>
 </div></footer>

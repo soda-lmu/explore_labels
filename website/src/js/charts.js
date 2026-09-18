@@ -18,39 +18,63 @@ function familyMarks(rows, fn) {
  * Rows of prevalence dots on one shared axis ("the diagnostic trap").
  * rows: {row, prev, source, family, model, label, detail}
  */
-export function stripPlot(container, rows, { rowOrder, xDomain, highlight } = {}) {
+export function stripPlot(container, rows, { rowOrder, xDomain, highlight, xLabel, ariaLabel, annotations } = {}) {
   const w = width(container);
   const narrow = w < 560;
+  const rowH = narrow ? 78 : 62;
+  const note = annotations ?? {};
   const plot = Plot.plot({
     width: w,
-    height: (narrow ? 70 : 46) * rowOrder.length + 60,
-    marginBottom: 40,
-    marginLeft: narrow ? 10 : 230,
-    marginRight: 20,
-    marginTop: narrow ? 24 : 10,
+    height: rowH * rowOrder.length + 64,
+    marginBottom: 44,
+    marginLeft: narrow ? 10 : 252,
+    marginRight: narrow ? 20 : 100,
+    marginTop: narrow ? 26 : 12,
     style: baseStyle,
-    x: { domain: xDomain, label: "Share labeled yes →", labelOffset: 34, tickFormat: (d) => `${Math.round(d * 100)}%`, grid: true, nice: true },
-    r: { type: "identity" },
-    fy: narrow ? { domain: rowOrder, label: null, axis: null, padding: 0.1 } : undefined,
-    y: narrow ? { axis: null } : { domain: rowOrder, label: null, tickSize: 0 },
+    x: {
+      domain: xDomain,
+      label: xLabel ?? "Share labeled yes →",
+      labelOffset: 34,
+      tickFormat: (d) => `${Math.round(d * 100)}%`,
+      grid: true,
+      nice: true
+    },
+    y: { axis: null },
+    fy: { domain: rowOrder, label: null, axis: narrow ? null : "left", padding: 0.18, tickSize: 0 },
     marks: [
-      Plot.ruleY(rowOrder, narrow ? { fy: (d) => d, y: 0, stroke: "var(--grid)" } : { y: (d) => d, stroke: "var(--grid)" }),
-      narrow ? Plot.text(rowOrder, { fy: (d) => d, text: (d) => d, frameAnchor: "top-left", dy: -2, fill: "var(--ink-2)", fontWeight: 500 }) : null,
-      ...familyMarks(rows, (data, color, isLlm) => Plot.dot(data, {
+      Plot.ruleY(rowOrder, { fy: (d) => d, y: 0, stroke: "var(--grid)" }),
+      narrow
+        ? Plot.text(rowOrder, { fy: (d) => d, text: (d) => d, frameAnchor: "top-left", dy: -4, fill: "var(--ink-2)", fontWeight: 500 })
+        : null,
+      // Dodge so that dense rows read as a distribution instead of one blob,
+      // and so that rows whose points coincide still show every point.
+      ...familyMarks(rows, (data, color, isLlm) => Plot.dot(data, Plot.dodgeY({ anchor: "middle" }, {
         x: "prev",
-        ...(narrow ? { fy: "row" } : { y: "row" }),
+        fy: "row",
         symbol: isLlm ? (d) => MODEL_SYMBOL[d.model] : () => "diamond",
-        r: (d) => (highlight && highlight(d) ? 7 : 5),
+        r: (d) => (highlight && highlight(d) ? 6 : 4.5),
         fill: color,
         fillOpacity: (d) => (highlight && !highlight(d) ? 0.35 : 0.9),
         stroke: "var(--surface)",
-        strokeWidth: 1.5,
-        channels: { Instrument: "label", Detail: "detail" },
+        strokeWidth: 1.2,
+        channels: { Setup: "label", Detail: "detail" },
         tip: { format: { x: (d) => pct(d, 1), y: false, fy: false, symbol: false, r: false, fillOpacity: false } }
-      }))
+      }))),
+      // Spread label at the right end of the row it describes, so the reader
+      // does not have to match four tiles to four rows by reading.
+      narrow || !Object.keys(note).length ? null : Plot.text(rowOrder.filter((r) => note[r]), {
+        fy: (d) => d,
+        frameAnchor: "right",
+        dx: 92,
+        text: (d) => note[d],
+        fill: "var(--ink-2)",
+        fontWeight: 500,
+        textAnchor: "end"
+      })
     ]
   });
   plot.setAttribute("role", "img");
+  if (ariaLabel) plot.setAttribute("aria-label", ariaLabel);
   container.replaceChildren(plot);
   return plot;
 }
@@ -84,7 +108,7 @@ export function pairPlot(container, items) {
  * Model x design heatmap. cells: {model, modelLabel, design, designLabel, value, prev, runs, runSd}
  * mode "abs" (sequential) or "diff" (diverging around 0).
  */
-export function heatmap(container, cells, { models, designs, mode, refLabel, extent }) {
+export function heatmap(container, cells, { models, designs, mode, refLabel, extent, onPick, outcomeLabel }) {
   const w = width(container, 1100);
   const narrow = w < 700;
   const color = mode === "diff"
@@ -94,13 +118,14 @@ export function heatmap(container, cells, { models, designs, mode, refLabel, ext
         tickFormat: (d) => `${Math.round(d * 100)}%` };
   const plot = Plot.plot({
     width: w,
-    height: 34 * designs.length + 120,
+    height: 34 * designs.length + 130,
     marginLeft: narrow ? 150 : 210,
-    marginBottom: 90,
+    marginTop: 96,
+    marginBottom: 24,
     style: baseStyle,
     padding: 0.06,
     color,
-    x: { domain: models.map((m) => m.id), tickFormat: (id) => models.find((m) => m.id === id)?.label, tickRotate: -35, label: null, axis: "bottom" },
+    x: { domain: models.map((m) => m.id), tickFormat: (id) => models.find((m) => m.id === id)?.label, tickRotate: -35, label: null, axis: "top" },
     y: { domain: designs.map((d) => d.design_id), tickFormat: (id) => designs.find((d) => d.design_id === id)?.label, label: null },
     marks: [
       Plot.cell(cells, {
@@ -122,6 +147,70 @@ export function heatmap(container, cells, { models, designs, mode, refLabel, ext
       })
     ]
   });
+  plot.setAttribute("role", "img");
+  plot.setAttribute("aria-label",
+    `Prevalence of ${outcomeLabel ?? "the label"} for each model and prompt recipe. Numbers are percent of tweets.`);
+  // Plot draws one <rect> per datum in data order. Attaching handlers to those
+  // rects gives a real click target (works on touch) and a keyboard path,
+  // instead of depending on the hover tip having set plot.value.
+  if (onPick) {
+    const rects = plot.querySelectorAll('g[aria-label="cell"] rect');
+    rects.forEach((rect, i) => {
+      const d = cells[i];
+      if (!d) return;
+      rect.style.cursor = "pointer";
+      rect.setAttribute("tabindex", "0");
+      rect.setAttribute("role", "button");
+      rect.setAttribute("aria-label",
+        `${d.modelLabel}, ${d.designLabel}: ${pct(d.prev, 1)}. Compare this setup.`);
+      rect.addEventListener("click", () => onPick(d));
+      rect.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onPick(d); }
+      });
+    });
+  }
+  container.replaceChildren(plot);
+  return plot;
+}
+
+/** Horizontal bars ranking how much each choice moves the label. */
+export function effectBars(container, rows, { xLabel, ariaLabel } = {}) {
+  const w = width(container, 760);
+  // Below this width the labels do not fit in a left margin, so they go above
+  // each bar instead of on an axis.
+  const narrow = w < 560;
+  const max = Math.max(...rows.map((r) => r.value));
+  const plot = Plot.plot({
+    width: w,
+    height: (narrow ? 62 : 46) * rows.length + 62,
+    marginLeft: narrow ? 8 : Math.min(280, Math.max(190, w * 0.34)),
+    marginRight: narrow ? 20 : 64,
+    marginTop: narrow ? 14 : 8,
+    marginBottom: 42,
+    style: baseStyle,
+    x: { label: xLabel ?? "Percentage points →", labelOffset: 34, grid: true, nice: true, domain: [0, max * (narrow ? 1.06 : 1.14)] },
+    y: { domain: rows.map((r) => r.label), label: null, tickSize: 0, axis: narrow ? null : "left" },
+    marks: [
+      narrow ? Plot.text(rows, {
+        x: 0, y: "label", text: "label", frameAnchor: "left", textAnchor: "start",
+        dy: -20, fill: "var(--ink-2)", fontWeight: 500
+      }) : null,
+      Plot.barX(rows, {
+        x: "value", y: "label", fill: (d) => d.tone === "human" ? HUMAN_VAR : "var(--fam-openai)",
+        fillOpacity: (d) => d.tone === "human" ? 0.85 : 0.9, rx: 3,
+        insetTop: narrow ? 14 : 6, insetBottom: narrow ? 2 : 6,
+        channels: { What: "detail" },
+        tip: { format: { x: (d) => `${d.toFixed(1)} pp`, y: false, fill: false, fillOpacity: false } }
+      }),
+      Plot.text(rows, {
+        x: "value", y: "label", text: (d) => `${d.value.toFixed(1)}`,
+        dx: 8, dy: narrow ? 7 : 0, textAnchor: "start", fill: "var(--ink)", fontWeight: 600
+      }),
+      Plot.ruleX([0], { stroke: "var(--grid)" })
+    ]
+  });
+  plot.setAttribute("role", "img");
+  if (ariaLabel) plot.setAttribute("aria-label", ariaLabel);
   container.replaceChildren(plot);
   return plot;
 }
@@ -177,4 +266,14 @@ export function table(rows, cols) {
   return h("div", { class: "table-wrap" }, h("table", {},
     h("thead", {}, h("tr", {}, cols.map((c) => h("th", { scope: "col" }, c.label)))),
     h("tbody", {}, rows.map((r) => h("tr", {}, cols.map((c) => h("td", {}, c.format ? c.format(r[c.key], r) : r[c.key])))))));
+}
+
+/**
+ * Text alternative for a figure: the same numbers as a table, behind a
+ * disclosure, so the chart is not the only way to reach the data.
+ */
+export function figureTable(summary, rows, cols) {
+  return h("details", { class: "fig-table" },
+    h("summary", {}, summary),
+    table(rows, cols));
 }

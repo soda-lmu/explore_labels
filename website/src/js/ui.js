@@ -83,7 +83,7 @@ export function instrumentLabel(meta, id) {
   const p = parseInstrument(id);
   if (!p) return id;
   if (p.source === "human") {
-    return p.version === "pooled" ? "Humans · majority of all 15 ratings" : `Humans · Version ${p.version}`;
+    return p.version === "pooled" ? "People · majority of all 15 ratings" : `Humans · Version ${p.version}`;
   }
   const d = meta.designs.find((x) => x.design_id === p.design);
   return `${modelLabel(meta, p.model)} · ${d ? d.label : p.design}`;
@@ -115,7 +115,7 @@ export function instrumentPicker(meta, value, name) {
   const variant = select(meta.variants.map((v) => ({ value: v.id, label: v.label })), d0.variant);
   const humanRow = h("div", { class: "controls" }, control("Questionnaire version", version));
   const llmRow = h("div", { class: "controls" },
-    control("Model", model), control("Task structure", structure), control("Presentation", variant));
+    control("Model", model), control("Questions asked", structure), control("How it was shown", variant));
   wrap.append(h("div", { class: "controls" }, src), humanRow, llmRow);
 
   const compute = () => (src.value === "human"
@@ -156,6 +156,11 @@ export function familyLegend(meta, withHuman = true) {
     ...fams.map((f) => ({ label: `${f} models`, color: FAMILY_VAR[f], shape: "circle" })),
     ...(withHuman ? [{ label: "Humans", color: HUMAN_VAR, shape: "diamond" }] : [])
   ]);
+}
+
+/** One computed sentence under a figure: what the reader should notice. */
+export function takeaway(text) {
+  return h("p", { class: "takeaway" }, text);
 }
 
 export function callout(level, title, notes = []) {

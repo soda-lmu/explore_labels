@@ -894,9 +894,9 @@ Original sequence:
 - [ ] Choose and state a data reuse license on the site and on Hugging Face.
 - [ ] Get coauthor sign-off on the tweet-text display policy.
 - [ ] Resolve the paper/repository discrepancies in section 19 and update the site's methods text to match the final paper.
-- [ ] Replace the anonymous repository link and the "under review" citation once the paper is public.
+- [ ] Replace the anonymous repository link and the "under review" citation once the paper is public. (The dead `href="#"` is now rendered as plain text rather than a broken link — v2-usability.)
 - [ ] Commit a Playwright suite: URL state round-trip, outcome toggle, presets, warnings, CSV download, content-warning gate, keyboard use, mobile layout.
-- [ ] Accessibility pass: WCAG 2.1 AA contrast audit, and text alternatives or data tables for every chart (the landscape page has a table; the overview and compare charts do not).
+- [~] Accessibility pass: text alternatives added for the overview strip plot and the effect-size bars; every figure now has an aria-label; heatmap cells are keyboard-reachable buttons (v2-usability). Still to do: WCAG 2.1 AA contrast measurement, and a non-hover path to the tooltip detail.
 - [ ] Add alt text and a broken-link scan to the build.
 - [ ] Record the environment in the release manifest: Python and npm lockfiles, and the paper version.
 - [ ] Coauthor review of the vertical slice (step 9).
@@ -905,8 +905,14 @@ Original sequence:
 - [ ] Section 6: model-specific effects of batching, confidence and task structure (use `permodel_coefs.csv` and `pooled_coefs.csv`).
 - [ ] Section 7: shared-feature effects for humans vs. LLMs, and all variance components on one scale.
 - [ ] Landscape: show the human-version points in the heatmap figure itself, not only in the strip below.
+- [x] Landscape: "What moves the label most?" — run / questionnaire version / prompt recipe / model effect sizes on one scale (v2-usability).
 
 ### Phase 3: item explorer
+
+> Re-ranked in the 2026-09-17 usability review: this is the highest-value remaining
+> addition for a reader who has not read the papers. `item_profiles.parquet` is now
+> used on the compare page (per-tweet contestedness next to each flipped tweet), but
+> there is still no per-tweet view.
 - [ ] Add Davidson counts to `items.parquet`. They need a source: the Hugging Face file, which is blocked in the current build environments.
 - [ ] Sortable sensitivity index from `item_profiles.parquet`, using the presets in section 10.9.
 - [ ] One-tweet fingerprint: human ratings by version, and the LLM model × design grid with run dots.

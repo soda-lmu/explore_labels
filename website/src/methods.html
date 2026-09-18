@@ -14,8 +14,8 @@
   <a class="brand" href="index.html">Annotation Sensitivity Explorer</a>
   <nav aria-label="Sections">
     <a href="index.html">Overview</a>
-    <a href="compare.html">Compare 2 Conditions</a>
-    <a href="landscape.html">All Conditions</a>
+    <a href="compare.html">Compare two setups</a>
+    <a href="landscape.html">Every setup</a>
     <a href="methods.html">Methods &amp; Data</a>
   </nav>
   <button type="button" class="theme-toggle">Dark theme</button>
@@ -24,7 +24,7 @@
 
 <h1>Methods, Data and Limitations</h1>
 <div id="methods-body">
-<p class="lede">This page summarizes the data and definitions behind the site. Full details are in the two papers: <a href="https://aclanthology.org/2023.findings-emnlp.992/">Kern et al. (2023)</a>, <i>Annotation Sensitivity: Training Data Collection Methods Affect Model Performance</i> (Findings of EMNLP), for the human ratings, and <!-- TODO: replace href with Reiter et al. paper link --><a href="#" class="placeholder-link">Reiter et al. (2026)</a>, <i>Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance</i> (under review), for the LLM labels.</p>
+<p class="lede">This page summarizes the data and definitions behind the site. Full details are in the two papers: <a href="https://aclanthology.org/2023.findings-emnlp.992/">Kern et al. (2023)</a>, <i>Annotation Sensitivity: Training Data Collection Methods Affect Model Performance</i> (Findings of EMNLP), for the human ratings, and <!-- TODO: link once the paper is public -->Reiter et al. (2026), <i>Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance</i> (under review), for the LLM labels.</p>
 <h2>Code and source data</h2>
 <ul>
 <li>LLM labels and analysis code (Reiter et al.): <a href="https://github.com/AnonymousACLSubmission/llm-annotation-sensitivity">github.com/AnonymousACLSubmission/llm-annotation-sensitivity</a></li>
@@ -33,15 +33,23 @@
 </ul>
 
 <h2>Data</h2>
-<p><strong>LLM labels.</strong> Seven models (GPT-4o-mini, GPT-5.4, Mistral Large 3, Mistral Medium 3.5, Llama 3.1 8B, Llama 3.1 70B, Llama 4) labeled the 3,000 tweets under 12 task designs, three runs each, at temperature 1: 755,999 usable labels per outcome. One Llama 3.1 8B response (joint, OL-first design) could not be parsed and is excluded. A temporal re-collection of GPT-4o-mini and GPT-5.4-mini are not included.</p>
+<p><strong>LLM labels.</strong> Seven models (GPT-4o-mini, GPT-5.4, Mistral Large 3, Mistral Medium 3.5, Llama 3.1 8B, Llama 3.1 70B, Llama 4) labeled the 3,000 tweets under 12 prompt recipes, three runs each, at temperature 1: 755,999 usable labels per outcome. One Llama 3.1 8B response (joint, OL-first design) could not be parsed and is excluded. A temporal re-collection of GPT-4o-mini and GPT-5.4-mini are not included.</p>
 <p><strong>Human ratings.</strong> The exact subset used in Kern et al. (2023): 44,900 ratings from 917 annotators on the same 3,000 tweets, five questionnaire versions, three ratings per tweet per version (100 ratings are missing in versions C and D). The public Hugging Face file also contains 44,250 ratings on 50 additional tweets; those are excluded.</p>
 <p><strong>Tweet text</strong> is the text distributed with the Kern et al. data, with @-mentions replaced by <code>@######</code>. The 3,000 tweets are a stratified sample of the Davidson et al. (2017) corpus.</p>
+
+<h2>Words used on this site</h2>
+<dl>
+<dt>Setup</dt><dd>Any one way of producing labels: a human questionnaire version, or one model under one prompt recipe. There are 90. In the data files and the CSV downloads this is the <code>instrument</code> column.</dd>
+<dt>Prompt recipe</dt><dd>One of the 12 LLM task designs: how the two questions are asked (joint OL-first, joint HS-first, or separate calls) × one or six tweets per prompt × with or without a confidence score.</dd>
+<dt>Questionnaire version</dt><dd>One of the five human instruments, A–E.</dd>
+<dt>Reliability vs. sensitivity</dt><dd><em>Reliability</em> is agreement <em>within</em> one setup, across its three runs or three annotators. <em>Sensitivity</em> is agreement <em>between</em> two setups. They are different questions, and a setup can score high on the first and low on the second. That contrast is the point of the comparison page.</dd>
+</dl>
 
 <h2>Definitions</h2>
 <dl>
 <dt>Eligible labels</dt><dd>In the separate-call designs only one construct is asked per call. The construct that was not asked is excluded, never counted as a negative label.</dd>
-<dt>Label-level prevalence</dt><dd>Share of positive labels among all eligible labels of an instrument (LLM: every run; humans: every rating).</dd>
-<dt>Item-level label</dt><dd>LLM: the modal label over three runs (a cell with one missing run and a 1–1 tie counts as negative, as in the paper's R code). Humans: the majority of the three ratings within a version; a 1–1 tie between two valid ratings counts as positive. The paper's human reference is the majority of all 15 ratings.</dd>
+<dt>Label-level prevalence</dt><dd>Share of positive labels among all eligible labels of a setup (LLM: every run; humans: every rating). Shown on the site as “share labeled yes, every individual label”.</dd>
+<dt>Item-level label</dt><dd>Shown on the site as “one label per tweet”. LLM: the modal label over three runs (a cell with one missing run and a 1–1 tie counts as negative, as in the paper's R code). Humans: the majority of the three ratings within a version; a 1–1 tie between two valid ratings counts as positive. The paper's human reference is the majority of all 15 ratings.</dd>
 <dt>Reliability</dt><dd>Fleiss' κ across the three runs (LLM) or three annotators (humans) of one instrument, over tweets with three valid labels. Human cards also show Krippendorff's α.</dd>
 <dt>Sensitivity</dt><dd>Cohen's κ and raw agreement between the item-level labels of two instruments, over tweets with a label on both sides. Raw agreement is always shown because κ depends on prevalence.</dd>
 <dt>Label flips</dt><dd>Tweets whose item-level label differs between the two instruments, by direction.</dd>
@@ -65,7 +73,7 @@
   <h2 class="refs-h">References</h2>
   <ol class="refs">
     <li>Kern, C., Eckman, S., Beck, J., Chew, R., Ma, B., &amp; Kreuter, F. (2023). <a href="https://aclanthology.org/2023.findings-emnlp.992/">Annotation Sensitivity: Training Data Collection Methods Affect Model Performance</a>. <i>Findings of EMNLP 2023</i>. Source of the human ratings.</li>
-    <li>Reiter et al. (2026). <!-- TODO: replace href with Reiter et al. paper link --><a href="#" class="placeholder-link">Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance</a>. Under review. Source of the LLM labels.</li>
+    <li>Reiter et al. (2026). <!-- TODO: link once the paper is public --><i class="placeholder-cite">Reliable but Sensitive: Evaluating LLM Annotation Beyond Performance</i>. Under review. Source of the LLM labels.</li>
     <li>Davidson, T., Warmsley, D., Macy, M., &amp; Weber, I. (2017). <a href="https://ojs.aaai.org/index.php/ICWSM/article/view/14955">Automated Hate Speech Detection and the Problem of Offensive Language</a>. <i>ICWSM</i>. Source of the tweets.</li>
   </ol>
   <p><span id="build-info"></span></p>

@@ -244,3 +244,63 @@ footer .refs li { margin-bottom: .3rem; }
 .tile-pick.pick-a { border-left: 3px solid var(--pick-a); }
 .tile-pick.pick-b { border-left: 3px solid var(--pick-b); }
 .matrix th.pick-a, .matrix th.pick-b { font-weight: 600; }
+
+/* ---------------------------------------------- v2: plain-language additions */
+
+/* One computed sentence under a figure. */
+.takeaway {
+  max-width: 46rem;
+  margin: .5rem 0;
+  padding-left: .75rem;
+  border-left: 3px solid var(--ink-3);
+  color: var(--ink);
+}
+.takeaway + .takeaway { margin-top: .45rem; }
+
+/* Text alternative for a chart. */
+.fig-table { margin: .4rem 0 .8rem; }
+.fig-table > summary { font-size: .85rem; }
+.fig-table table { margin-top: .5rem; }
+
+/* Key for the OL/HS chips, whose hues are reused for model families below. */
+.inst-key { margin: 0 0 .7rem; max-width: 44rem; }
+.key-chip {
+  display: inline-block; padding: 0 .4rem; border-radius: 3px;
+  font: 600 .72rem var(--sans); vertical-align: baseline;
+}
+.key-hs { background: var(--hs); color: var(--hs-ink); }
+.key-ol { background: var(--ol); color: var(--ol-ink); }
+
+/* Starter comparisons at the top of the compare page. */
+.starters { margin: 0 0 1.1rem; }
+.starters #starters-label { margin: 0 0 .35rem; }
+#starters button.chip { cursor: pointer; text-align: left; font: inherit; font-size: .9rem; }
+#starters button.chip:hover { border-color: var(--ink-2); }
+
+.swap { margin-top: .2rem; }
+
+/* A disabled control stays in place rather than collapsing the row. */
+.control.is-disabled { opacity: .45; }
+
+/* Flipped-tweet entries: what each side said, then the text, then context. */
+.tweets > li { padding: .6rem 0; border-bottom: 1px solid var(--rule); }
+.tw-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem; margin-bottom: .25rem; }
+.tw-body { margin: .1rem 0 .3rem; }
+.tw-context { margin: 0; }
+.verdict {
+  font: 600 .72rem var(--sans); padding: .05rem .4rem; border-radius: 999px;
+  border: 1px solid currentColor;
+}
+.verdict.pick-a { color: var(--pick-a); }
+.verdict.pick-b { color: var(--pick-b); }
+.verdict.yes { font-weight: 700; }
+
+.tile-pick.pick-flip .v { color: var(--ink); }
+.method-details { margin-top: .6rem; }
+.method-details > summary { font-size: .85rem; }
+
+/* The placeholder citation is not a link until the paper is public. */
+.placeholder-cite { color: var(--ink-2); }
+
+.takeaway-list { max-width: 44rem; padding-left: 1.1rem; }
+.takeaway-list li { margin-bottom: .55rem; }

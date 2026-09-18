@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   parseInstrument, classifyComparison, transitions, lookupPair, pairIndex,
-  readState, writeState, signedPp, bp, dec, toCSV, DEFAULT_STATE
+  readState, writeState, signedPp, dec, toCSV, DEFAULT_STATE, partnerDesign
 } from "../../src/js/logic.js";
 
 const meta = JSON.parse(readFileSync(new URL("../../src/public/data/meta.json", import.meta.url)));
@@ -59,8 +59,27 @@ test("URL state round-trips and rejects bad values", () => {
 test("formatters", () => {
   assert.equal(signedPp(0.0123), "+1.2 pp");
   assert.equal(signedPp(-0.05), "−5.0 pp");
-  assert.equal(bp(0.0123), "+123 bp");
-  assert.equal(dec(0.756), ".76");
-  assert.equal(dec(-0.1), "-.10");
+  assert.equal(dec(0.756), "0.76");
+  assert.equal(dec(-0.1), "-0.10");
   assert.equal(toCSV([{ a: 1, b: 'x,"y"' }, { a: NaN, b: null }]), 'a,b\n1,"x,""y"""\n,\n');
+});
+
+test("partnerDesign toggles exactly one factor", () => {
+  // The bug this replaces: string surgery on the id turned "batch_conf" into
+  // "batch", producing a confidence contrast labelled as a batching contrast.
+  assert.equal(partnerDesign("joint_ol__base", meta, "batched"), "joint_ol__batch");
+  assert.equal(partnerDesign("joint_ol__batch", meta, "batched"), "joint_ol__base");
+  assert.equal(partnerDesign("joint_ol__batch_conf", meta, "batched"), "joint_ol__conf");
+  assert.equal(partnerDesign("joint_ol__conf", meta, "batched"), "joint_ol__batch_conf");
+  assert.equal(partnerDesign("separate__base", meta, "confidence"), "separate__conf");
+  assert.equal(partnerDesign("separate__batch_conf", meta, "confidence"), "separate__batch");
+  // structure is never changed
+  for (const d of meta.designs) {
+    for (const f of ["batched", "confidence"]) {
+      const out = partnerDesign(d.design_id, meta, f);
+      assert.equal(out.split("__")[0], d.structure);
+      assert.notEqual(out, d.design_id);
+    }
+  }
+  assert.equal(partnerDesign("nope", meta, "batched"), null);
 });

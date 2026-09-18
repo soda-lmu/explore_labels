@@ -32,7 +32,12 @@ function screensSvg({ screens, gap }) {
       tweetBox(x + 7, 7, SW - 14, `Tweet ${t}`) +
       qs.map((q, j) => chip(x + 7, 42 + j * 22, SW - 14, q)).join("");
   });
-  if (gap) parts.push(`<text x="${2 * SW + GAP * 1.5}" y="${SH / 2 + 5}" text-anchor="middle" class="dots">…</text>`);
+  if (gap) {
+    const cx = 2 * SW + GAP * 1.5;
+    parts.push(`<text x="${cx}" y="${SH / 2}" text-anchor="middle" class="dots">…</text>`);
+    parts.push(`<text x="${cx}" y="${SH / 2 + 16}" text-anchor="middle" class="tw-n">48 more</text>`);
+    parts.push(`<text x="${cx}" y="${SH / 2 + 25}" text-anchor="middle" class="tw-n">tweets</text>`);
+  }
   return `<svg viewBox="0 0 ${w} ${SH}" width="${w}" height="${SH}" aria-hidden="true">${parts.join("")}</svg>`;
 }
 
@@ -49,8 +54,12 @@ export function humanFigure(container) {
       `<line x1="0" y1="6" x2="${w - 8}" y2="6" class="axis-line"/><path d="M${w - 9} 1 L${w} 6 L${w - 9} 11 Z" class="axis-head"/>` +
       `<text x="${w}" y="20" text-anchor="end" class="tw-t">screens, in the order the person saw them</text></svg>` }),
     h("div"));
-  container.replaceChildren(
-    h("div", { class: "inst-fig", role: "img", "aria-label": "Diagram of the five human labeling versions, A to E" }, rows, arrow));
+  const key = h("p", { class: "small muted inst-key" },
+    h("span", { class: "key-chip key-hs" }, "HS"), " the hate speech question · ",
+    h("span", { class: "key-chip key-ol" }, "OL"), " the offensive language question. ",
+    "These two colours mark the questions here; in the charts below colour marks the model family.");
+  container.replaceChildren(key,
+    h("div", { class: "inst-fig", role: "img", "aria-label": "Diagram of the five human labeling versions, A to E: each version is a sequence of screens showing a tweet and one or both questions." }, rows, arrow));
 }
 
 // ------------------------------------------------------------------ LLMs
@@ -94,7 +103,7 @@ export function llmFigure(container, meta) {
         [jointPrompt("HS", "OL"), "Both in one prompt, HS first"],
         [separatePrompts(), "A separate prompt for each question"]]),
       times(),
-      factor("", "1 vs 6 tweets per prompt", [
+      factor("2", "ways to show the tweets", [
         [tweetsPerPrompt(1), "One tweet"],
         [tweetsPerPrompt(6), "Six tweets at once"]]),
       times(),
