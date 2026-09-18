@@ -1,0 +1,10 @@
+[build]
+  base = "website"
+  command = "npm run build"
+  publish = "website/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Client-side routing fallback isn't needed here (each page is its own
+# static HTML file), so no redirect rules are required.
