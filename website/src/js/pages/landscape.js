@@ -73,10 +73,10 @@ function whatMoves(oc, allDesigns) {
 
   return {
     bars: [
-      { label: "Re-running the same setup", value: 100 * median(runSpreads), detail: "median spread across 3 runs of one setup" },
-      { label: "Changing questionnaire version", value: 100 * range(humanPrev), tone: "human", detail: "spread across the 5 human versions" },
-      { label: "Changing the prompt recipe", value: 100 * median(promptSpreads), detail: "median across models of the spread over 12 recipes" },
-      { label: "Changing the model", value: 100 * median(modelSpreads), detail: "median across recipes of the spread over 7 models" }
+      { label: "Re-running the same setup", value: 100 * median(runSpreads), short: "median spread across 3 runs", detail: "median spread across 3 runs of one setup" },
+      { label: "Changing questionnaire version", value: 100 * range(humanPrev), tone: "human", short: "spread across the 5 versions", detail: "spread across the 5 human versions" },
+      { label: "Changing the prompt recipe", value: 100 * median(promptSpreads), short: "median over the 7 models", detail: "median across models of the spread over 12 recipes" },
+      { label: "Changing the model", value: 100 * median(modelSpreads), short: "median over the 12 recipes", detail: "median across recipes of the spread over 7 models" }
     ],
     worstPrompt, bestPrompt,
     promptSpreads, modelSpreads

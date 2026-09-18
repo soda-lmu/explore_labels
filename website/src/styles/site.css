@@ -13,9 +13,13 @@
   --caution-ink: #6b4500;
   --ok-bg: #e6f2ea;
   --ok-ink: #1d5a33;
-  /* LLM families (Okabe-Ito, as in the paper; validated all-pairs) */
+  /* LLM families. Okabe-Ito blue and green as in the paper; Meta moved off
+     Okabe-Ito orange (#e69f00) to wine, because the family orange and the
+     hate-speech orange collided — in dark mode they simulated to ΔE 2.6.
+     Worst-case pairwise ΔE across normal/deuter/protan/tritan vision, counting
+     the OL and HS chips as well: light 11.7 (unchanged), dark 2.6 → 6.6. */
   --fam-openai: #0072b2;
-  --fam-meta: #e69f00;
+  --fam-meta: #882255;
   --fam-mistral: #009e73;
   /* humans: one neutral ink, always with a diamond mark and a label */
   --human: #2b2b29;
@@ -49,7 +53,7 @@
     --ok-bg: #16301f;
     --ok-ink: #9fdcb2;
     --fam-openai: #3d8fd1;
-    --fam-meta: #c98500;
+    --fam-meta: #cc7090;
     --fam-mistral: #199e70;
     --human: #ecebe4;
     --hs: #e0782a;
@@ -68,9 +72,17 @@
   --ink: #f1f0ea; --ink-2: #c3c2b7; --ink-3: #a3a298; --rule: #3a3a36;
   --accent: #7db5ee; --caution-bg: #3a2c12; --caution-ink: #f3cf8a;
   --ok-bg: #16301f; --ok-ink: #9fdcb2;
-  --fam-openai: #3d8fd1; --fam-meta: #c98500; --fam-mistral: #199e70;
+  --fam-openai: #3d8fd1; --fam-meta: #cc7090; --fam-mistral: #199e70;
   --human: #ecebe4; --hs: #e0782a; --hs-ink: #1a1a19; --ol: #62b8ea; --ol-ink: #0c2533; --pick-a: #a98cd6; --pick-b: #f2a0c8; --grid: #2f2f2c; --focus: #7db5ee;
 }
+
+/* Observable Plot draws its tooltip box with --plot-background, which its own
+   generated rule sets to white regardless of theme — so in dark mode every tip
+   was light text on a white box. That rule is :where(.plot-xxxx), i.e. zero
+   specificity, but it lands on the element itself, so inheritance cannot beat
+   it; this matches the element directly instead. */
+svg[class*="plot-"],
+figure[class*="plot-"] { --plot-background: var(--surface); }
 
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }

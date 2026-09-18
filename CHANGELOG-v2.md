@@ -81,6 +81,44 @@ site still comes from the validated build.
 - "How to read this" split: one sentence inline, the rest behind a disclosure.
 - Reference select on the landscape page is disabled rather than hidden, so the row stops jumping.
 
+## Tooltips and palette (second pass)
+
+- **Every tooltip on the site was unreadable in dark mode.** Observable Plot draws the tip
+  box with `--plot-background`, which its own generated rule pins to white regardless of
+  theme, while the text inherits `var(--ink)` — light text on a white box. The rule is
+  `:where(.plot-xxxx)`, zero specificity but applied to the element itself, so inheritance
+  cannot override it; a direct element selector now binds it to `var(--surface)`. This
+  affected the strip plots, the heatmap and the locator, not only the new bar chart.
+- **The effect-size tip also showed the wrong content**: its first row was the long x-axis
+  label, and the method text was truncated with an ellipsis. It now has its own short
+  channels, and all tips get `lineWidth: 30` so long setup names wrap instead of truncating.
+- **Meta moves off orange, to wine** (`#882255` light, `#cc7090` dark). Measured rather than
+  guessed: worst-case pairwise ΔE2000 across normal, deuteranopic, protanopic and tritanopic
+  simulation, counting the OL and HS chips as additional colours —
+
+  | | within families | vs OL/HS | worst |
+  |---|---|---|---|
+  | light, before | 11.7 | 13.7 | 11.7 |
+  | light, after | 11.7 | 13.7 | 11.7 |
+  | **dark, before** | 6.6 | **2.6** | **2.6** |
+  | **dark, after** | 6.6 | 8.0 | **6.6** |
+
+  The dark-mode figure is the finding: family orange `#c98500` and hate-speech orange
+  `#e0782a` simulated to ΔE 2.6, which is below the just-noticeable threshold — in dark mode
+  the two encodings were not merely confusable, they were the same colour. Wine keeps blue
+  and green as the paper has them and costs nothing in light mode.
+
+  Searched alternatives first. Triads that dodge *both* the OL blue and the HS orange while
+  staying categorically distinct and legible on both surfaces all scored the same or worse:
+  pushing families toward purple/teal collides with OL blue under tritanopia, and the best
+  scoring triad numerically (blue / sand / wine, worst-case 20.2) puts Mistral on a pale
+  yellow with 1.6:1 contrast on the light surface. Moving one hue was the best available trade.
+
+  Residual: OpenAI blue `#0072b2` and the OL chip `#56b4e9` are still the same hue family,
+  separated mainly by lightness. The cheaper complete fix is the other direction — the OL/HS
+  chips carry their own "OL"/"HS" text, so they do not need hue at all, which would let the
+  model palette stay exactly as the paper prints it. Left for Stephanie to decide.
+
 ## Also
 
 - The Reiter et al. placeholder `href="#"` on all four pages is now plain text rather than a

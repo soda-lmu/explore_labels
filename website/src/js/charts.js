@@ -58,7 +58,7 @@ export function stripPlot(container, rows, { rowOrder, xDomain, highlight, xLabe
         stroke: "var(--surface)",
         strokeWidth: 1.2,
         channels: { Setup: "label", Detail: "detail" },
-        tip: { format: { x: (d) => pct(d, 1), y: false, fy: false, symbol: false, r: false, fillOpacity: false } }
+        tip: { lineWidth: 30, format: { x: (d) => pct(d, 1), y: false, fy: false, symbol: false, r: false, fillOpacity: false } }
       }))),
       // Spread label at the right end of the row it describes, so the reader
       // does not have to match four tiles to four rows by reading.
@@ -136,7 +136,7 @@ export function heatmap(container, cells, { models, designs, mode, refLabel, ext
           "Runs 1–3": (d) => d.runs.map((r) => pct(r, 1)).join(" · "),
           ...(mode === "diff" ? { Difference: (d) => `${d.value > 0 ? "+" : ""}${(100 * d.value).toFixed(1)} pp` } : {})
         },
-        tip: { format: { x: false, y: false, fill: false } }
+        tip: { lineWidth: 30, format: { x: false, y: false, fill: false } }
       }),
       Plot.text(cells, {
         x: "model", y: "design",
@@ -199,8 +199,11 @@ export function effectBars(container, rows, { xLabel, ariaLabel } = {}) {
         x: "value", y: "label", fill: (d) => d.tone === "human" ? HUMAN_VAR : "var(--fam-openai)",
         fillOpacity: (d) => d.tone === "human" ? 0.85 : 0.9, rx: 3,
         insetTop: narrow ? 14 : 6, insetBottom: narrow ? 2 : 6,
-        channels: { What: "detail" },
-        tip: { format: { x: (d) => `${d.toFixed(1)} pp`, y: false, fill: false, fillOpacity: false } }
+        channels: {
+          "Moves prevalence by": (d) => `${d.value.toFixed(1)} percentage points`,
+          "Measured as": (d) => d.short ?? d.detail
+        },
+        tip: { lineWidth: 30, format: { x: false, y: false, fill: false, fillOpacity: false } }
       }),
       Plot.text(rows, {
         x: "value", y: "label", text: (d) => `${d.value.toFixed(1)}`,
