@@ -131,9 +131,9 @@ export function heatmap(container, cells, { models, designs, mode, refLabel, ext
       Plot.cell(cells, {
         x: "model", y: "design", fill: "value", rx: 3,
         channels: {
-          Model: "modelLabel", Design: "designLabel",
+          Setup: "modelLabel", "Prompt recipe": "designLabel",
           Prevalence: (d) => pct(d.prev, 1),
-          "Runs 1–3": (d) => d.runs.map((r) => pct(r, 1)).join(" · "),
+          "Runs 1–3": (d) => d.runs ? d.runs.map((r) => pct(r, 1)).join(" · ") : "single value, all human raters",
           ...(mode === "diff" ? { Difference: (d) => `${d.value > 0 ? "+" : ""}${(100 * d.value).toFixed(1)} pp` } : {})
         },
         tip: { lineWidth: 30, format: { x: false, y: false, fill: false } }
@@ -161,8 +161,9 @@ export function heatmap(container, cells, { models, designs, mode, refLabel, ext
       rect.style.cursor = "pointer";
       rect.setAttribute("tabindex", "0");
       rect.setAttribute("role", "button");
-      rect.setAttribute("aria-label",
-        `${d.modelLabel}, ${d.designLabel}: ${pct(d.prev, 1)}. Compare this setup.`);
+      rect.setAttribute("aria-label", d.kind === "human"
+        ? `${d.modelLabel}: ${pct(d.prev, 1)}. Compare this setup.`
+        : `${d.modelLabel}, ${d.designLabel}: ${pct(d.prev, 1)}. Compare this setup.`);
       rect.addEventListener("click", () => onPick(d));
       rect.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onPick(d); }

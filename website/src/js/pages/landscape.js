@@ -145,8 +145,18 @@ function render() {
     runMap.get(k)[r.run - 1] = r.prev;
   }
   const modelMean = Object.fromEntries(meta.models.map((m) => [m.id, meanOf(m.id)]));
-  const refVal = (m) => state.ref === "model-mean" ? modelMean[m] : byInst.get(state.ref).raw_prev;
   const refLabel = state.ref === "model-mean" ? "model mean" : (state.ref === "human:pooled" ? "human reference" : `human Version ${state.ref.split(":")[1]}`);
+
+  // Human versions do not have a "prompt recipe" axis, so each human column
+  // repeats its one prevalence value across every design row. That is the
+  // point: it puts people on the same color scale and the same figure as
+  // the models, right where the target reader most wants them (§4.3.6 of
+  // the usability review), instead of leaving them only in the strip plot
+  // below.
+  const humans = meta.human_versions.map((v) => byInst.get(humanId(v.version)));
+  const overallModelMean = models.length
+    ? models.reduce((a, m) => a + modelMean[m.id], 0) / models.length : NaN;
+  const refValFor = (id) => state.ref === "model-mean" ? (modelMean[id] ?? overallModelMean) : byInst.get(state.ref).raw_prev;
 
   const cells = [];
   for (const m of models) for (const d of designs) {
@@ -155,36 +165,55 @@ function render() {
     cells.push({
       model: m.id, modelLabel: m.label, design: d.design_id, designLabel: d.label,
       prev, runs: runMap.get(llmId(m.id, d.design_id)), runSd: r.run_sd,
-      value: state.view === "diff" ? prev - refVal(m.id) : prev,
-      reliability: r.reliability
+      value: state.view === "diff" ? prev - refValFor(m.id) : prev,
+      reliability: r.reliability, kind: "llm"
+    });
+  }
+  const humanCols = meta.human_versions.map((v) => ({ id: humanId(v.version), label: `Human ${v.version}` }));
+  const humanCells = [];
+  for (const col of humanCols) for (const d of designs) {
+    const r = byInst.get(col.id);
+    const prev = r.raw_prev;
+    humanCells.push({
+      model: col.id, modelLabel: col.label, design: d.design_id, designLabel: d.label,
+      prev, runs: null, runSd: null,
+      value: state.view === "diff" ? prev - refValFor(col.id) : prev,
+      reliability: r.reliability, kind: "human"
     });
   }
   const el = document.getElementById("heatmap");
   const empty = !cells.length;
   if (empty) el.replaceChildren(h("p", { class: "muted" }, "Select at least one model."));
-  const vals = cells.map((c) => c.value);
+  const allCells = [...cells, ...humanCells];
+  const vals = allCells.map((c) => c.value);
   const extent = state.view === "diff"
     ? Math.max(0.05, ...vals.map(Math.abs))
     : [Math.min(...vals), Math.max(...vals)];
   if (!empty) {
-    heatmap(el, cells, {
-      models, designs, mode: state.view, refLabel, extent, outcomeLabel: outcomeLabel(oc),
+    heatmap(el, allCells, {
+      models: [...models, ...humanCols], designs, mode: state.view, refLabel, extent, outcomeLabel: outcomeLabel(oc),
       onPick: (v) => {
-        location.href = `compare.html?${new URLSearchParams({ outcome: oc, a: llmId(v.model, v.design), b: humanId("pooled") })}`;
+        const a = v.kind === "human" ? v.model : llmId(v.model, v.design);
+        location.href = `compare.html?${new URLSearchParams({ outcome: oc, a, b: humanId("pooled") })}`;
       }
     });
     const lo = cells.reduce((a, b) => (a.prev < b.prev ? a : b));
     const hi = cells.reduce((a, b) => (a.prev > b.prev ? a : b));
+    const humanLo = humans.reduce((a, b) => (a.raw_prev < b.raw_prev ? a : b));
+    const humanHi = humans.reduce((a, b) => (a.raw_prev > b.raw_prev ? a : b));
+    const humansInside = humanLo.raw_prev >= lo.prev && humanHi.raw_prev <= hi.prev;
     document.getElementById("heatmap-takeaway").replaceChildren(takeaway(
       `Columns differ more than rows: the choice of model moves prevalence further than the choice of recipe. ` +
       `The extremes here are ${hi.modelLabel} · ${hi.designLabel} at ${pct(hi.prev)} and ` +
-      `${lo.modelLabel} · ${lo.designLabel} at ${pct(lo.prev)} — on the same 3,000 tweets.`));
+      `${lo.modelLabel} · ${lo.designLabel} at ${pct(lo.prev)} — on the same 3,000 tweets.`),
+      takeaway(`The five human versions (${humanLo.label} at ${pct(humanLo.raw_prev)} to ${humanHi.label} at ${pct(humanHi.raw_prev)}) ` +
+        `${humansInside ? "sit inside the range of the LLM setups shown" : "reach outside the range of the LLM setups shown"} — ` +
+        `look for their columns at the right edge of the heatmap.`));
   } else {
     document.getElementById("heatmap-takeaway").replaceChildren();
   }
 
   // distribution strip: every cell and every human version on one axis
-  const humans = meta.human_versions.map((v) => byInst.get(humanId(v.version)));
   const rows = [
     ...cells.map((c) => ({
       row: "LLM setups (model × recipe)", prev: c.prev, source: "llm", family: famOf[c.model], model: c.model,
