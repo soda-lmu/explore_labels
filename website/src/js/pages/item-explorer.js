@@ -48,6 +48,21 @@ function syncUrl() {
   history.replaceState(null, "", writeState(state, KEYS, DEFAULTS) || location.pathname);
 }
 
+// ------------------------------------------------------------------ hover text gate
+function renderHoverGate() {
+  const box = document.getElementById("hover-gate");
+  if (showText) {
+    box.replaceChildren(h("p", { class: "small muted" }, "Tweet text shows on hover over a row, and in the detail panel below."));
+    return;
+  }
+  box.replaceChildren(contentWarning(() => {
+    showText = true;
+    renderHoverGate();
+    renderList();
+    if (state.tweet) renderDetail();
+  }));
+}
+
 // ------------------------------------------------------------------ index list
 function renderList() {
   const oc = state.outcome;
@@ -65,7 +80,10 @@ function renderList() {
       h("th", { scope: "col" }, "LLMs said yes"),
       h("th", { scope: "col" }, "Human instability"),
       h("th", { scope: "col" }, "LLM instability"))),
-    h("tbody", {}, visible.map((r, i) => h("tr", { class: r.tweet_id === Number(state.tweet) ? "is-selected" : "" },
+    h("tbody", {}, visible.map((r, i) => h("tr", {
+      class: r.tweet_id === Number(state.tweet) ? "is-selected" : "",
+      title: showText ? textById.get(r.tweet_id) : undefined
+    },
       h("td", {}, h("button", { type: "button", class: "idx-row-btn", onclick: () => selectTweet(r.tweet_id) }, String(i + 1))),
       h("td", {}, h("button", { type: "button", class: "idx-row-btn", onclick: () => selectTweet(r.tweet_id) }, `#${r.tweet_id}`)),
       h("td", {}, pct(r.human_share_pos)),
@@ -201,5 +219,6 @@ async function renderDetail() {
     llmGrid(oc, id));
 }
 
+renderHoverGate();
 renderList();
 if (state.tweet) renderDetail();
