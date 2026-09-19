@@ -147,12 +147,6 @@ function render() {
   const modelMean = Object.fromEntries(meta.models.map((m) => [m.id, meanOf(m.id)]));
   const refLabel = state.ref === "model-mean" ? "model mean" : (state.ref === "human:pooled" ? "human reference" : `human Version ${state.ref.split(":")[1]}`);
 
-  // Human versions do not have a "prompt recipe" axis, so each human column
-  // repeats its one prevalence value across every design row. That is the
-  // point: it puts people on the same color scale and the same figure as
-  // the models, right where the target reader most wants them (§4.3.6 of
-  // the usability review), instead of leaving them only in the strip plot
-  // below.
   const humans = meta.human_versions.map((v) => byInst.get(humanId(v.version)));
   const overallModelMean = models.length
     ? models.reduce((a, m) => a + modelMean[m.id], 0) / models.length : NaN;
@@ -169,32 +163,18 @@ function render() {
       reliability: r.reliability, kind: "llm"
     });
   }
-  const humanCols = meta.human_versions.map((v) => ({ id: humanId(v.version), label: `Human ${v.version}` }));
-  const humanCells = [];
-  for (const col of humanCols) for (const d of designs) {
-    const r = byInst.get(col.id);
-    const prev = r.raw_prev;
-    humanCells.push({
-      model: col.id, modelLabel: col.label, design: d.design_id, designLabel: d.label,
-      prev, runs: null, runSd: null,
-      value: state.view === "diff" ? prev - refValFor(col.id) : prev,
-      reliability: r.reliability, kind: "human"
-    });
-  }
   const el = document.getElementById("heatmap");
   const empty = !cells.length;
   if (empty) el.replaceChildren(h("p", { class: "muted" }, "Select at least one model."));
-  const allCells = [...cells, ...humanCells];
-  const vals = allCells.map((c) => c.value);
+  const vals = cells.map((c) => c.value);
   const extent = state.view === "diff"
     ? Math.max(0.05, ...vals.map(Math.abs))
     : [Math.min(...vals), Math.max(...vals)];
   if (!empty) {
-    heatmap(el, allCells, {
-      models: [...models, ...humanCols], designs, mode: state.view, refLabel, extent, outcomeLabel: outcomeLabel(oc),
+    heatmap(el, cells, {
+      models, designs, mode: state.view, refLabel, extent, outcomeLabel: outcomeLabel(oc),
       onPick: (v) => {
-        const a = v.kind === "human" ? v.model : llmId(v.model, v.design);
-        location.href = `compare.html?${new URLSearchParams({ outcome: oc, a, b: humanId("pooled") })}`;
+        location.href = `compare.html?${new URLSearchParams({ outcome: oc, a: llmId(v.model, v.design), b: humanId("pooled") })}`;
       }
     });
     const lo = cells.reduce((a, b) => (a.prev < b.prev ? a : b));
@@ -207,8 +187,7 @@ function render() {
       `The extremes here are ${hi.modelLabel} · ${hi.designLabel} at ${pct(hi.prev)} and ` +
       `${lo.modelLabel} · ${lo.designLabel} at ${pct(lo.prev)} — on the same 3,000 tweets.`),
       takeaway(`The five human versions (${humanLo.label} at ${pct(humanLo.raw_prev)} to ${humanHi.label} at ${pct(humanHi.raw_prev)}) ` +
-        `${humansInside ? "sit inside the range of the LLM setups shown" : "reach outside the range of the LLM setups shown"} — ` +
-        `look for their columns at the right edge of the heatmap.`));
+        `${humansInside ? "sit inside the range of the LLM setups shown" : "reach outside the range of the LLM setups shown"} — see them plotted below.`));
   } else {
     document.getElementById("heatmap-takeaway").replaceChildren();
   }
