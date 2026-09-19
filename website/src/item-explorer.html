@@ -11,8 +11,8 @@
   gtag("config", "G-GH1JBRD8EM");
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Every setup · Annotation Sensitivity Explorer</title>
-<meta name="description" content="What moves the label most, and prevalence for every model and prompt recipe next to the five human questionnaire versions.">
+<title>Item explorer · Annotation Sensitivity Explorer</title>
+<meta name="description" content="Which tweets people and LLMs disagree about most, tweet by tweet: every human rating and every model run side by side.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='1' y='9' width='3' height='6' fill='%230072b2'/><rect x='6' y='4' width='3' height='11' fill='%23882255'/><rect x='11' y='7' width='3' height='8' fill='%23009e73'/></svg>">
 <link rel="stylesheet" href="./styles/site.css">
 </head>
@@ -34,33 +34,18 @@
 </div></header>
 <main id="main">
 
-<h1>Every setup</h1>
-<p class="lede">How wide is the set of results across defensible choices? Every one of the 90 setups labeled the same 3,000 tweets. A <b>setup</b> is one model under one prompt recipe, averaged over three runs, or one human questionnaire version.</p>
+<h1>Which tweets are contested?</h1>
+<p class="lede">The pages so far compare setups. This page compares tweets: for each one, how split were the 15 human ratings, and how split were the 84 LLM setups? Pick a tweet to see every rating it got.</p>
 <div class="controls" id="controls"></div>
+<p id="index-summary" class="small muted"></p>
 
-<section id="what-moves" class="anchor-target">
-  <h2>What moves the label most?</h2>
-  <p>Each bar is the spread in prevalence you get by changing one thing and holding everything else fixed. Longer means that choice matters more.</p>
-  <div class="figure" id="what-moves-fig"><p class="loading">Loading…</p></div>
-  <div id="what-moves-table"></div>
-  <div id="what-moves-takeaway"></div>
+<section id="index-list" aria-label="Sensitivity index">
+  <div id="index-table"></div>
+  <div id="index-more"></div>
 </section>
 
-<h2>Humans and models on one axis</h2>
-<p class="question">Where do the five human versions fall relative to the LLM setups?</p>
-<div id="dist-legend"></div>
-<div class="figure" id="dist"></div>
-<div class="grid tiles" id="spread"></div>
+<section id="detail" class="anchor-target" aria-label="Tweet detail"></section>
 
-<h2>Prevalence by model and prompt recipe</h2>
-<p class="small muted">Numbers are the percent of tweets given the label. Hover or focus a cell for the three run-level prevalences; click it, or press Enter, to open that setup in the comparison view.</p>
-<div class="figure" id="heatmap"><p class="loading">Loading…</p></div>
-<div id="heatmap-takeaway"></div>
-<details>
-  <summary>Table view</summary>
-  <div id="table"></div>
-  <button type="button" id="download">Download table (CSV)</button>
-</details>
 </main>
 <footer><div class="inner">
   <h2 class="refs-h">References</h2>
@@ -70,6 +55,6 @@
   </ol>
   <p class="source">Site code and data package: <a href="https://github.com/stepheckman/explore_labels">github.com/stepheckman/explore_labels</a>. <span id="build-info"></span></p>
 </div></footer>
-<script type="module" src="./js/pages/landscape.js"></script>
+<script type="module" src="./js/pages/item-explorer.js"></script>
 </body>
 </html>

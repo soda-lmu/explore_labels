@@ -24,6 +24,7 @@
     <a href="index.html">Overview</a>
     <a href="compare.html">Compare two setups</a>
     <a href="landscape.html">Every setup</a>
+    <a href="item-explorer.html">Item explorer</a>
     <a href="methods.html">Methods &amp; Data</a>
   </nav>
   <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
@@ -65,6 +66,8 @@
 <dt>Reliability</dt><dd>Fleiss' κ across the three runs (LLM) or three annotators (humans) of one instrument, over tweets with three valid labels. Human cards also show Krippendorff's α.</dd>
 <dt>Sensitivity</dt><dd>Cohen's κ and raw agreement between the item-level labels of two instruments, over tweets with a label on both sides. Raw agreement is always shown because κ depends on prevalence.</dd>
 <dt>Label flips</dt><dd>Tweets whose item-level label differs between the two instruments, by direction.</dd>
+<dt>Human share positive / LLM share positive</dt><dd>For one tweet, the share of the 15 human ratings (all five questionnaire versions pooled) or the 84 LLM setups (each averaged over its three runs) that were positive. Used on the <a href="item-explorer.html">item explorer</a> page.</dd>
+<dt>Instability</dt><dd>1 &minus; |2 &times; (share positive &minus; 0.5)|, computed separately for humans and LLMs. 0 means every rating agreed; 1 means the tweet split as close to 50/50 as a vote can get. A tweet can be human-stable and LLM-unstable, or the other way around.</dd>
 </dl>
 
 <h2>Comparing humans and LLMs</h2>

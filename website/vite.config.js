@@ -1,7 +1,7 @@
 import { resolve } from "node:path";
 import { defineConfig } from "vite";
 
-const pages = ["index", "compare", "landscape", "methods"];
+const pages = ["index", "compare", "landscape", "methods", "item-explorer"];
 
 export default defineConfig({
   root: "src",

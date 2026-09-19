@@ -343,3 +343,34 @@ footer .refs li { margin-bottom: .3rem; }
 
 .takeaway-list { max-width: 44rem; padding-left: 1.1rem; }
 .takeaway-list li { margin-bottom: .55rem; }
+
+/* ---- item explorer ---- */
+.idx-table table { width: 100%; }
+.idx-table th, .idx-table td { white-space: nowrap; }
+.idx-table button.idx-row-btn {
+  all: unset; display: block; width: 100%; cursor: pointer;
+  padding: .3rem .5rem; text-align: left; color: inherit; font: inherit;
+}
+.idx-table button.idx-row-btn:hover, .idx-table button.idx-row-btn:focus-visible { background: var(--surface-2); }
+.idx-table tr.is-selected { background: var(--surface-3); font-weight: 600; }
+
+.tally-chips { display: flex; flex-wrap: wrap; gap: .35rem; margin: .4rem 0 1rem; }
+.tally-chip { font-size: .82rem; padding: .2rem .55rem; border-radius: 999px; border: 1px solid var(--rule); background: var(--surface); }
+.tally-chip.all-yes { background: var(--ok-bg); color: var(--ok-ink); border-color: transparent; }
+.tally-chip.all-no { background: var(--surface-2); color: var(--ink-2); }
+.tally-chip.split { background: var(--caution-bg); color: var(--caution-ink); border-color: transparent; }
+
+.llm-grid-wrap table { border-collapse: collapse; }
+.llm-grid-wrap th, .llm-grid-wrap td { padding: .3rem .5rem; text-align: center; border-bottom: 1px solid var(--rule); }
+.llm-grid-wrap th.model-name { text-align: left; white-space: nowrap; }
+.llm-grid-wrap thead th { font-weight: 600; font-size: .8rem; }
+.llm-grid-wrap thead tr.variant-row th { font-weight: 400; font-size: .75rem; color: var(--ink-2); }
+.run-dots { display: inline-flex; gap: 2px; }
+.run-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; border: 1px solid var(--ink-3); }
+.run-dot.yes { background: var(--ink); border-color: var(--ink); }
+.run-dot.no { background: transparent; }
+.run-dot.na { border-style: dotted; opacity: .4; }
+.fam-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: .4rem; vertical-align: 1px; }
+
+.detail-header { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem; justify-content: space-between; }
+.detail-tweet-text { font-size: 1.05rem; margin: .6rem 0; padding: .7rem .9rem; border-left: 3px solid var(--rule); background: var(--surface-2); }

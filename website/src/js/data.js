@@ -40,6 +40,8 @@ export const loadPairwise = () => readParquet("pairwise.parquet");
 export const loadRunPrevalence = () => readParquet("run_prevalence.parquet");
 export const loadItems = () => readParquet("items.parquet");
 export const loadItemProfiles = () => readParquet("item_profiles.parquet");
+export const loadHumanAnnotations = () => readParquet("human_annotations.parquet");
+export const loadLlmAnnotations = () => readParquet("llm_annotations.parquet");
 
 /** Item-level labels for a set of instruments, aligned by tweet_id. */
 export async function loadItemLabels(outcome, ids) {
