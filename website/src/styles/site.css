@@ -347,11 +347,13 @@ footer .refs li { margin-bottom: .3rem; }
 /* ---- item explorer ---- */
 .idx-table table { width: 100%; }
 .idx-table th, .idx-table td { white-space: nowrap; }
+.idx-table tbody tr { cursor: pointer; }
+.idx-table tbody tr:hover { background: var(--surface-2); }
 .idx-table button.idx-row-btn {
-  all: unset; display: block; width: 100%; cursor: pointer;
-  padding: .3rem .5rem; text-align: left; color: inherit; font: inherit;
+  all: unset; cursor: pointer; color: var(--accent);
+  text-decoration: underline; text-underline-offset: 2px; font: inherit;
 }
-.idx-table button.idx-row-btn:hover, .idx-table button.idx-row-btn:focus-visible { background: var(--surface-2); }
+.idx-table button.idx-row-btn:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
 .idx-table tr.is-selected { background: var(--surface-3); font-weight: 600; }
 
 .tally-chips { display: flex; flex-wrap: wrap; gap: .35rem; margin: .4rem 0 1rem; }

@@ -52,7 +52,7 @@ function syncUrl() {
 function renderHoverGate() {
   const box = document.getElementById("hover-gate");
   if (showText) {
-    box.replaceChildren(h("p", { class: "small muted" }, "Tweet text shows on hover over a row, and in the detail panel below."));
+    box.replaceChildren(h("p", { class: "small muted" }, "Tweet text now shows when you hover over a row, and in each tweet's detail panel."));
     return;
   }
   box.replaceChildren(contentWarning(() => {
@@ -82,10 +82,13 @@ function renderList() {
       h("th", { scope: "col" }, "LLM instability"))),
     h("tbody", {}, visible.map((r, i) => h("tr", {
       class: r.tweet_id === Number(state.tweet) ? "is-selected" : "",
-      title: showText ? textById.get(r.tweet_id) : undefined
+      title: showText ? textById.get(r.tweet_id) : undefined,
+      onclick: () => selectTweet(r.tweet_id)
     },
-      h("td", {}, h("button", { type: "button", class: "idx-row-btn", onclick: () => selectTweet(r.tweet_id) }, String(i + 1))),
-      h("td", {}, h("button", { type: "button", class: "idx-row-btn", onclick: () => selectTweet(r.tweet_id) }, `#${r.tweet_id}`)),
+      h("td", {}, String(i + 1)),
+      h("td", {}, h("button", { type: "button", class: "idx-row-btn",
+        "aria-label": `Show every rating for tweet ${r.tweet_id}`,
+        onclick: (e) => { e.stopPropagation(); selectTweet(r.tweet_id); } }, `#${r.tweet_id}`)),
       h("td", {}, pct(r.human_share_pos)),
       h("td", {}, pct(r.llm_share_pos)),
       h("td", {}, dec(r.human_instability)),
