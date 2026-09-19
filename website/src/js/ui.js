@@ -46,6 +46,20 @@ export function initChrome() {
   for (const a of document.querySelectorAll(".site-header nav a")) {
     if (a.getAttribute("href").split("?")[0] === here) a.setAttribute("aria-current", "page");
   }
+
+  const navToggle = document.querySelector(".nav-toggle");
+  const nav = document.getElementById("site-nav");
+  if (navToggle && nav) {
+    const setOpen = (open) => {
+      nav.classList.toggle("is-open", open);
+      navToggle.setAttribute("aria-expanded", String(open));
+      navToggle.querySelector(".nav-toggle-label").textContent = open ? "Close" : "Menu";
+    };
+    navToggle.addEventListener("click", () => setOpen(!nav.classList.contains("is-open")));
+    // A resize past the mobile breakpoint (e.g. rotating a tablet) can leave
+    // the menu marked "open" while the CSS breakpoint no longer hides it.
+    window.matchMedia("(min-width: 701px)").addEventListener("change", (e) => { if (e.matches) setOpen(false); });
+  }
 }
 
 /** Segmented button group. Returns element with .value and dispatches "input". */
