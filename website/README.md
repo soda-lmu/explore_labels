@@ -1,7 +1,10 @@
 # Annotation Sensitivity Explorer (local build)
 
+Developer notes for the site. For what this project is and what you can do with
+it, start at the [root README](../README.md).
+
 Interactive site for the human (Kern et al. 2023) and LLM annotations of the
-same 3,000 tweets. Implements Phases 1–2 of `../interactive_label_comparison.md`.
+same 3,000 tweets.
 
 ## Run it
 

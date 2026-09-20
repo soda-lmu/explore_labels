@@ -9,3 +9,7 @@ __pycache__/
 # papers (not for the repo)
 *.pdf
 _to_delete/
+
+# internal working documents (kept locally, not published)
+interactive_label_comparison.md
+usability_review.md

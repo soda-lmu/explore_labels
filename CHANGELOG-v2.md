@@ -1,6 +1,6 @@
 # v2-usability
 
-Branched from `main` at `7f2b22a`. Addresses the findings in `usability_review.md`.
+Branched from `main` at `7f2b22a`. Addresses the findings of an internal usability review.
 No pipeline or data changes: `src/public/data/` is untouched, so every number on the
 site still comes from the validated build.
 
