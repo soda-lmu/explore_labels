@@ -34,13 +34,13 @@ export function classifyComparison(a, b, meta) {
   const versions = Object.fromEntries(meta.human_versions.map((v) => [v.version, v]));
   if (A.source === "llm" && B.source === "llm") {
     if (A.model === B.model) {
-      return { kind: "llm-design", title: "Prompt-recipe contrast (same model)", notes, level: "ok" };
+      return { kind: "llm-design", title: "Task-design contrast (same model)", notes, level: "ok" };
     }
     if (A.design === B.design) {
-      return { kind: "llm-model", title: "Model contrast (same prompt recipe)", notes, level: "ok" };
+      return { kind: "llm-model", title: "Model contrast (same task design)", notes, level: "ok" };
     }
-    notes.push("Both the model and the prompt recipe differ, so the difference mixes two sources of variation and cannot be attributed to either.");
-    return { kind: "llm-both", title: "Model and prompt recipe both differ", notes, level: "caution" };
+    notes.push("Both the model and the task design differ, so the difference mixes two sources of variation and cannot be attributed to either.");
+    return { kind: "llm-both", title: "Model and task design both differ", notes, level: "caution" };
   }
   if (A.source === "human" && B.source === "human") {
     if (A.version === "pooled" || B.version === "pooled") {
@@ -48,7 +48,7 @@ export function classifyComparison(a, b, meta) {
       return { kind: "human-pooled", title: "Human version vs. pooled human majority", notes, level: "caution" };
     }
     notes.push("Each version was rated by a different, randomly assigned annotator panel. The difference includes panel sampling variation, not only questionnaire design.");
-    return { kind: "human-design", title: "Questionnaire-version contrast", notes, level: "caution" };
+    return { kind: "human-design", title: "Instrument-version contrast", notes, level: "caution" };
   }
   // human vs LLM
   const H = A.source === "human" ? A : B;
@@ -68,7 +68,7 @@ export function classifyComparison(a, b, meta) {
       level: close ? "ok" : "caution"
     };
   }
-  notes.push(`This prompt recipe is not the closest analogue of human Version ${H.version}; the two setups differ in more than one feature, so the gap is not a clean human-versus-LLM comparison.`);
+  notes.push(`This task design is not the closest analogue of human Version ${H.version}; the two setups differ in more than one feature, so the gap is not a clean human-versus-LLM comparison.`);
   return { kind: "human-llm-none", title: "No direct design analogue", notes, level: "caution" };
 }
 

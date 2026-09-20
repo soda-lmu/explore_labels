@@ -17,13 +17,13 @@ const outcomeSeg = segmented(meta.outcomes.map((o) => ({ value: o.id, label: o.l
 const modelSel = select(meta.models.map((m) => ({ value: m.id, label: m.label })), state.model);
 const designSel = select(meta.designs.map((d) => ({ value: d.design_id, label: d.label })), state.design);
 document.getElementById("trap-controls").append(
-  control("Label", outcomeSeg), control("Model", modelSel), control("Prompt recipe (top row)", designSel));
+  control("Label", outcomeSeg), control("Model", modelSel), control("Task design (top row)", designSel));
 document.getElementById("trap-legend").append(familyLegend(meta));
 
 const ROWS = {
   runs: "Same setup, run 3 times",
-  designs: "One model, 12 prompt recipes",
-  models: "7 models × 12 recipes",
+  designs: "One model, 12 task designs",
+  models: "7 models × 12 designs",
   humans: "5 human versions"
 };
 
@@ -73,9 +73,9 @@ function renderTrap() {
 
   document.getElementById("trap-tiles").replaceChildren(...[
     ["Re-running one setup", spreadOf(ROWS.runs)],
-    ["Switching prompt recipe", spreadOf(ROWS.designs)],
-    ["Switching model or recipe", spreadOf(ROWS.models)],
-    ["Switching questionnaire version", spreadOf(ROWS.humans)]
+    ["Switching task design", spreadOf(ROWS.designs)],
+    ["Switching model or task design", spreadOf(ROWS.models)],
+    ["Switching instrument version", spreadOf(ROWS.humans)]
   ].map(([k, v]) =>
     h("div", { class: "tile" }, h("div", { class: "k" }, k),
       h("div", { class: "v" }, `${(100 * v).toFixed(1)} points`),
@@ -110,7 +110,7 @@ function renderTrap() {
       { key: "spread", label: "Spread", format: (v) => `${(100 * v).toFixed(1)} pts` }
     ]));
 
-  // Presets. The partner recipe is derived by toggling one factor, so the
+  // Presets. The partner task design is derived by toggling one factor, so the
   // label always describes the contrast the link actually opens.
   const batchPartner = partnerDesign(d, meta, "batched");
   const confPartner = partnerDesign(d, meta, "confidence");
@@ -125,8 +125,8 @@ function renderTrap() {
       a: llmId(m, designOf[d].confidence_requested ? confPartner : d),
       b: llmId(m, designOf[d].confidence_requested ? d : confPartner)
     },
-    { label: "Same recipe, two models: GPT-4o-mini vs. Llama 3.1 8B", a: llmId("GPT-4o-mini", d), b: llmId("Llama-3.1-8B", d) },
-    { label: "Human version A vs. the closest LLM recipe", a: humanId("A"), b: llmId(m, "joint_hs__base") },
+    { label: "Same task design, two models: GPT-4o-mini vs. Llama 3.1 8B", a: llmId("GPT-4o-mini", d), b: llmId("Llama-3.1-8B", d) },
+    { label: "Human version A vs. the closest LLM task design", a: humanId("A"), b: llmId(m, "joint_hs__base") },
     { label: "Human version A vs. human version D", a: humanId("A"), b: humanId("D") }
   ].filter(Boolean);
   document.getElementById("presets").replaceChildren(...presets.map((p) =>

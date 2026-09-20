@@ -41,7 +41,7 @@ const STARTERS = [
   { label: "Same model, one tweet vs. six per prompt", a: "llm:GPT-4o-mini:joint_ol__base", b: "llm:GPT-4o-mini:joint_ol__batch" },
   { label: "Same prompt, two models", a: "llm:GPT-4o-mini:joint_ol__base", b: "llm:Llama-3.1-8B:joint_ol__base" },
   { label: "People vs. an LLM", a: "human:pooled", b: "llm:GPT-4o-mini:joint_hs__base" },
-  { label: "Two human questionnaire versions", a: "human:A", b: "human:D" }
+  { label: "Two human instrument versions", a: "human:A", b: "human:D" }
 ];
 document.getElementById("starters").replaceChildren(...STARTERS.map((s) =>
   h("button", { type: "button", class: "chip card",
@@ -66,7 +66,7 @@ function card(side, r) {
       : ["Agreement within this setup", "not defined for the pooled reference"],
     isHuman && Number.isFinite(r.alpha) ? ["Krippendorff's α (3 annotators)", dec(r.alpha)] : null,
     !isHuman ? ["Spread across the 3 runs", `${(100 * r.run_sd).toFixed(2)} pp (standard deviation)`] : null,
-    !isHuman ? ["Confidence scores", r.conf_requested ? `requested · valid for ${pct(r.conf_valid_rate)} · mean ${r.conf_mean.toFixed(0)}` : "not requested in this recipe"] : null
+    !isHuman ? ["Confidence scores", r.conf_requested ? `requested · valid for ${pct(r.conf_valid_rate)} · mean ${r.conf_mean.toFixed(0)}` : "not requested in this task design"] : null
   ].filter(Boolean);
   return h("div", { class: `card card-${side.toLowerCase()}` },
     h("h3", {}, h("span", { class: `pick-dot pick-${side.toLowerCase()}`, "aria-hidden": "true" }), `${side}: ${instrumentLabel(meta, r.instrument)}`),

@@ -46,15 +46,15 @@
 </ul>
 
 <h2>Data</h2>
-<p><strong>LLM labels.</strong> Seven models (GPT-4o-mini, GPT-5.4, Mistral Large 3, Mistral Medium 3.5, Llama 3.1 8B, Llama 3.1 70B, Llama 4) labeled the 3,000 tweets under 12 prompt recipes, three runs each, at temperature 1: 755,999 usable labels per outcome. One Llama 3.1 8B response (joint, OL-first design) could not be parsed and is excluded. A temporal re-collection of GPT-4o-mini and GPT-5.4-mini are not included.</p>
-<p><strong>Human ratings.</strong> The exact subset used in Kern et al. (2023): 44,900 ratings from 917 annotators on the same 3,000 tweets, five questionnaire versions, three ratings per tweet per version (100 ratings are missing in versions C and D). The public Hugging Face file also contains 44,250 ratings on 50 additional tweets; those are excluded.</p>
+<p><strong>LLM labels.</strong> Seven models (GPT-4o-mini, GPT-5.4, Mistral Large 3, Mistral Medium 3.5, Llama 3.1 8B, Llama 3.1 70B, Llama 4) labeled the 3,000 tweets under 12 task designs, three runs each, at temperature 1: 755,999 usable labels per outcome. One Llama 3.1 8B response (joint, OL-first design) could not be parsed and is excluded. A temporal re-collection of GPT-4o-mini and GPT-5.4-mini are not included.</p>
+<p><strong>Human ratings.</strong> The exact subset used in Kern et al. (2023): 44,900 ratings from 917 annotators on the same 3,000 tweets, five instrument versions, three ratings per tweet per version (100 ratings are missing in versions C and D). The public Hugging Face file also contains 44,250 ratings on 50 additional tweets; those are excluded.</p>
 <p><strong>Tweet text</strong> is the text distributed with the Kern et al. data, with @-mentions replaced by <code>@######</code>. The 3,000 tweets are a stratified sample of the Davidson et al. (2017) corpus.</p>
 
 <h2>Words used on this site</h2>
 <dl>
-<dt>Setup</dt><dd>Any one way of producing labels: a human questionnaire version, or one model under one prompt recipe. There are 90. In the data files and the CSV downloads this is the <code>instrument</code> column.</dd>
-<dt>Prompt recipe</dt><dd>One of the 12 LLM task designs: how the two questions are asked (joint OL-first, joint HS-first, or separate calls) × one or six tweets per prompt × with or without a confidence score.</dd>
-<dt>Questionnaire version</dt><dd>One of the five human instruments, A–E.</dd>
+<dt>Setup</dt><dd>Any one way of producing labels: a human instrument version, or one model under one task design. There are 90. The papers have no single word covering both, so <em>setup</em> is used here; in the data files and the CSV downloads it is the <code>instrument</code> column.</dd>
+<dt>Task design</dt><dd>One of the 12 ways the LLM prompt was built: how the two questions are asked (joint OL-first, joint HS-first, or separate calls) × one or six tweets per prompt × with or without a confidence score.</dd>
+<dt>Instrument version</dt><dd>One of the five versions of the human questionnaire, A–E.</dd>
 <dt>Reliability vs. sensitivity</dt><dd><em>Reliability</em> is agreement <em>within</em> one setup, across its three runs or three annotators. <em>Sensitivity</em> is agreement <em>between</em> two setups. They are different questions, and a setup can score high on the first and low on the second. That contrast is the point of the comparison page.</dd>
 </dl>
 
@@ -66,7 +66,7 @@
 <dt>Reliability</dt><dd>Fleiss' κ across the three runs (LLM) or three annotators (humans) of one instrument, over tweets with three valid labels. Human cards also show Krippendorff's α.</dd>
 <dt>Sensitivity</dt><dd>Cohen's κ and raw agreement between the item-level labels of two instruments, over tweets with a label on both sides. Raw agreement is always shown because κ depends on prevalence.</dd>
 <dt>Label flips</dt><dd>Tweets whose item-level label differs between the two instruments, by direction.</dd>
-<dt>Human share positive / LLM share positive</dt><dd>For one tweet, the share of the 15 human ratings (all five questionnaire versions pooled) or the 84 LLM setups (each averaged over its three runs) that were positive. Used on the <a href="item-explorer.html">item explorer</a> page.</dd>
+<dt>Human share positive / LLM share positive</dt><dd>For one tweet, the share of the 15 human ratings (all five instrument versions pooled) or the 84 LLM setups (each averaged over its three runs) that were positive. Used on the <a href="item-explorer.html">item explorer</a> page.</dd>
 <dt>Instability</dt><dd>1 &minus; |2 &times; (share positive &minus; 0.5)|, computed separately for humans and LLMs. 0 means every rating agreed; 1 means the tweet split as close to 50/50 as a vote can get. A tweet can be human-stable and LLM-unstable, or the other way around.</dd>
 </dl>
 

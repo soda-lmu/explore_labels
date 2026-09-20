@@ -131,7 +131,7 @@ export function heatmap(container, cells, { models, designs, mode, refLabel, ext
       Plot.cell(cells, {
         x: "model", y: "design", fill: "value", rx: 3,
         channels: {
-          Setup: "modelLabel", "Prompt recipe": "designLabel",
+          Setup: "modelLabel", "Task design": "designLabel",
           Prevalence: (d) => pct(d.prev, 1),
           "Runs 1–3": (d) => d.runs ? d.runs.map((r) => pct(r, 1)).join(" · ") : "single value, all human raters",
           ...(mode === "diff" ? { Difference: (d) => `${d.value > 0 ? "+" : ""}${(100 * d.value).toFixed(1)} pp` } : {})
@@ -149,7 +149,7 @@ export function heatmap(container, cells, { models, designs, mode, refLabel, ext
   });
   plot.setAttribute("role", "img");
   plot.setAttribute("aria-label",
-    `Prevalence of ${outcomeLabel ?? "the label"} for each model and prompt recipe. Numbers are percent of tweets.`);
+    `Prevalence of ${outcomeLabel ?? "the label"} for each model and task design. Numbers are percent of tweets.`);
   // Plot draws one <rect> per datum in data order. Attaching handlers to those
   // rects gives a real click target (works on touch) and a keyboard path,
   // instead of depending on the hover tip having set plot.value.

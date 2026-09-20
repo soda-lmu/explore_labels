@@ -20,7 +20,7 @@ const refSel = select([
   ...meta.human_versions.map((v) => ({ value: humanId(v.version), label: `Human Version ${v.version}` })),
   { value: "model-mean", label: "Each model's own mean" }
 ], state.ref);
-const designSeg = segmented([{ value: "all", label: "All 12 recipes" }, { value: "noconf", label: "No-confidence recipes" }], state.designs, "Recipes");
+const designSeg = segmented([{ value: "all", label: "All 12 task designs" }, { value: "noconf", label: "No-confidence designs" }], state.designs, "Task designs");
 const sortSel = select([
   { value: "meta", label: "Order in the paper" },
   { value: "prev", label: "Lowest to highest prevalence" },
@@ -31,7 +31,7 @@ const modelBoxes = h("div", { class: "chips", role: "group", "aria-label": "Mode
     h("input", { type: "checkbox", value: m.id, checked: !state.models || state.models.split(",").includes(m.id) }), ` ${m.label}`)));
 document.getElementById("controls").append(
   control("Label", outcomeSeg), control("Show", viewSeg), control("Reference", refSel),
-  control("Prompt recipes", designSeg), control("Sort models by", sortSel), control("Models", modelBoxes));
+  control("Task designs", designSeg), control("Sort models by", sortSel), control("Models", modelBoxes));
 document.getElementById("dist-legend").append(familyLegend(meta));
 for (const el of [outcomeSeg, viewSeg, refSel, designSeg, sortSel, modelBoxes]) el.addEventListener("input", render);
 window.addEventListener("themechange", render);
@@ -58,9 +58,9 @@ function whatMoves(oc, allDesigns) {
   const designs = allDesigns.map((d) => d.design_id);
 
   const runSpreads = [...runBy.values()].map(range);
-  // one model, every recipe
+  // one model, every task design
   const promptSpreads = models.map((m) => range(designs.map((d) => cellPrev(m, d))));
-  // one recipe, every model
+  // one task design, every model
   const modelSpreads = designs.map((d) => range(models.map((m) => cellPrev(m, d))));
   const humanPrev = meta.human_versions.map((v) => byInst.get(humanId(v.version)).raw_prev);
 
@@ -74,9 +74,9 @@ function whatMoves(oc, allDesigns) {
   return {
     bars: [
       { label: "Re-running the same setup", value: 100 * median(runSpreads), short: "median spread across 3 runs", detail: "median spread across 3 runs of one setup" },
-      { label: "Changing questionnaire version", value: 100 * range(humanPrev), tone: "human", short: "spread across the 5 versions", detail: "spread across the 5 human versions" },
-      { label: "Changing the prompt recipe", value: 100 * median(promptSpreads), short: "median over the 7 models", detail: "median across models of the spread over 12 recipes" },
-      { label: "Changing the model", value: 100 * median(modelSpreads), short: "median over the 12 recipes", detail: "median across recipes of the spread over 7 models" }
+      { label: "Changing instrument version", value: 100 * range(humanPrev), tone: "human", short: "spread across the 5 versions", detail: "spread across the 5 human versions" },
+      { label: "Changing the task design", value: 100 * median(promptSpreads), short: "median over the 7 models", detail: "median across models of the spread over 12 task designs" },
+      { label: "Changing the model", value: 100 * median(modelSpreads), short: "median over the 12 task designs", detail: "median across task designs of the spread over 7 models" }
     ],
     worstPrompt, bestPrompt,
     promptSpreads, modelSpreads
@@ -94,13 +94,13 @@ function renderWhatMoves(oc, designs) {
   const modelEff = w.bars[3].value, promptEff = w.bars[2].value;
   document.getElementById("what-moves-takeaway").replaceChildren(
     takeaway(`Which model you pick typically moves prevalence about ${(modelEff / promptEff).toFixed(1)}× as much as ` +
-      `which prompt recipe you use — and both dwarf re-running the same setup, which moves it by ` +
+      `which task design you use — and both dwarf re-running the same setup, which moves it by ` +
       `${w.bars[0].value.toFixed(1)} points.`),
-    takeaway(`The averages hide a lot. For ${modelLabel(meta, w.worstPrompt.m)} the prompt recipe alone moves prevalence ` +
+    takeaway(`The averages hide a lot. For ${modelLabel(meta, w.worstPrompt.m)} the task design alone moves prevalence ` +
       `${(100 * w.worstPrompt.v).toFixed(0)} points — as much as switching model does. For ` +
       `${modelLabel(meta, w.bestPrompt.m)} it moves it only ${(100 * w.bestPrompt.v).toFixed(1)}. ` +
       `"How prompt-sensitive is this model?" has no single answer.`),
-    takeaway(`Every LLM choice here moves the label more than the five human questionnaire versions did ` +
+    takeaway(`Every LLM choice here moves the label more than the five human instrument versions did ` +
       `(${w.bars[1].value.toFixed(1)} points), even though those versions were designed to differ.`));
   document.getElementById("what-moves-table").replaceChildren(
     figureTable("Show these numbers as a table", bars.map((b) => ({ ...b, value: b.value })), [
@@ -183,7 +183,7 @@ function render() {
     const humanHi = humans.reduce((a, b) => (a.raw_prev > b.raw_prev ? a : b));
     const humansInside = humanLo.raw_prev >= lo.prev && humanHi.raw_prev <= hi.prev;
     document.getElementById("heatmap-takeaway").replaceChildren(takeaway(
-      `Columns differ more than rows: the choice of model moves prevalence further than the choice of recipe. ` +
+      `Columns differ more than rows: the choice of model moves prevalence further than the choice of task design. ` +
       `The extremes here are ${hi.modelLabel} · ${hi.designLabel} at ${pct(hi.prev)} and ` +
       `${lo.modelLabel} · ${lo.designLabel} at ${pct(lo.prev)} — on the same 3,000 tweets.`),
       takeaway(`The five human versions (${humanLo.label} at ${pct(humanLo.raw_prev)} to ${humanHi.label} at ${pct(humanHi.raw_prev)}) ` +
@@ -195,7 +195,7 @@ function render() {
   // distribution strip: every cell and every human version on one axis
   const rows = [
     ...cells.map((c) => ({
-      row: "LLM setups (model × recipe)", prev: c.prev, source: "llm", family: famOf[c.model], model: c.model,
+      row: "LLM setups (model × task design)", prev: c.prev, source: "llm", family: famOf[c.model], model: c.model,
       label: `${c.modelLabel} · ${c.designLabel}`, detail: `runs ${c.runs.map((x) => pct(x)).join(" · ")}`
     })),
     ...cells.flatMap((c) => c.runs.map((p, i) => ({
@@ -209,7 +209,7 @@ function render() {
   ];
   const all = rows.map((r) => r.prev);
   stripPlot(document.getElementById("dist"), rows, {
-    rowOrder: ["Human versions (5)", "LLM setups (model × recipe)", "Individual runs (3 per setup)"],
+    rowOrder: ["Human versions (5)", "LLM setups (model × task design)", "Individual runs (3 per setup)"],
     xDomain: [Math.min(...all) - 0.02, Math.max(...all) + 0.02],
     xLabel: `Share of tweets labeled ${outcomeLabel(oc).toLowerCase()} →`,
     ariaLabel: `Every selected LLM setup, every individual run, and the five human versions on one prevalence axis.`
@@ -232,7 +232,7 @@ function render() {
   }));
   document.getElementById("table").replaceChildren(table(rowsForTable, [
     { key: "model", label: "Model", format: (v) => modelLabel(meta, v) },
-    { key: "design_label", label: "Prompt recipe" },
+    { key: "design_label", label: "Task design" },
     { key: "prevalence", label: "Prevalence", format: (v) => pct(v) },
     { key: "run1", label: "Run 1", format: (v) => pct(v) },
     { key: "run2", label: "Run 2", format: (v) => pct(v) },

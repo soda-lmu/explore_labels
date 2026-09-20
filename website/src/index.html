@@ -36,8 +36,8 @@
 
 <h1>Same tweets, different labels</h1>
 <p class="lede">Does the way you ask for a label change the label you get? We took 3,000 tweets from a widely used hate speech dataset and had them labeled for <span class="kw kw-ol">offensive language (OL)</span> and <span class="kw kw-hs">hate speech (HS)</span>, by people and by LLMs, and changed how the questions were asked.</p>
-<p>917 people were randomly assigned to one of <a href="#human-versions">five versions of the labeling task</a>. Seven LLMs labeled the same tweets under <a href="#llm-designs">twelve prompt recipes</a>. Below, you can see how much these choices move the labels. Diagrams of each setup are at the bottom of the page.</p>
-<p class="small muted">A <b>setup</b> is one way of producing labels: a human questionnaire version, or one model run under one prompt recipe. There are 90 of them here.</p>
+<p>917 people were randomly assigned to one of <a href="#human-versions">five versions of the labeling task</a>. Seven LLMs labeled the same tweets under <a href="#llm-designs">twelve task designs</a>. Below, you can see how much these choices move the labels. Diagrams of each setup are at the bottom of the page.</p>
+<p class="small muted">A <b>setup</b> is one way of producing labels: a human instrument version, or one model run under one task design. There are 90 of them here.</p>
 
 <section id="trap" class="anchor-target">
   <h2>Does the setup change the labels?</h2>
@@ -63,7 +63,7 @@
 
 <section id="llm-designs" class="anchor-target">
   <h2>How LLMs labeled the tweets</h2>
-  <p>The LLMs got the same definitions people did. We changed three things about the prompt and tried every combination. We call one combination a <b>prompt recipe</b>.</p>
+  <p>The LLMs got the same definitions people did. We changed three things about the prompt and tried every combination. We call one combination a <b>task design</b>.</p>
   <div id="llm-fig" class="figure"></div>
 </section>
 <section id="takeaways" class="anchor-target">
@@ -71,7 +71,7 @@
   <p>Three things follow from the numbers above.</p>
   <ol class="takeaway-list">
     <li><b>Repeatability is not stability.</b> An LLM that gives you the same label three runs in a row can still give a very different answer under a prompt you would have considered equally reasonable. Reporting only repeat-run agreement overstates how solid a label set is.</li>
-    <li><b>The setup is part of the result.</b> Prevalence here moves by tens of points across choices nobody would call wrong. A prevalence figure without its prompt recipe, or a questionnaire without its layout, is not reproducible.</li>
+    <li><b>The setup is part of the result.</b> Prevalence here moves by tens of points across choices nobody would call wrong. A prevalence figure without its task design, or a questionnaire without its layout, is not reproducible.</li>
     <li><b>Which choice matters is model-specific.</b> Some models barely notice the prompt; others move as much from a prompt change as from being swapped for a different model. You cannot assume the sensitivity you measured on one model carries to another.</li>
   </ol>
   <p class="small muted">These conclusions come from the <a href="landscape.html#what-moves">ranking of what moves the label most</a>; <a href="methods.html">Methods &amp; Data</a> has the definitions and the limitations.</p>

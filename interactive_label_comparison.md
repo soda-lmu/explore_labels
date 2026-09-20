@@ -877,15 +877,27 @@ Original sequence:
 | 2026-09-17 | Human versions B/C map to "Separate · Base" and D/E to "Separate · Batch of 6" (shared features); A maps to "Joint, HS first · Base" (close match) | Implements section 6 |
 | 2026-09-18 | Meta moves off Okabe-Ito orange (#e69f00) to wine (#882255 light, #cc7090 dark); OpenAI blue and Mistral green keep the paper's values | In dark mode the family orange (#c98500) and the hate-speech chip orange (#e0782a) simulated to ΔE2000 2.6 — below the just-noticeable threshold, so the two encodings were the same colour, not merely confusable. Worst-case pairwise ΔE across normal/deuteranopic/protanopic/tritanopic simulation, counting the OL and HS chips: dark 2.6 → 6.6; light unchanged at 11.7. Triads that dodge both the OL blue and the HS orange all scored the same or worse (purple/teal collides with OL blue under tritanopia; the best numeric triad puts Mistral on a pale yellow at 1.6:1 contrast on the light surface) |
 | 2026-09-18 | **The OL and HS chip colours stay as they are** (OL #56b4e9 / #62b8ea, HS #c75400 / #e0782a). The residual similarity between OpenAI blue (#0072b2) and the OL chip is accepted | They match Kern et al. Fig. 1, which the diagrams are drawn after, and the chips carry their own "OL"/"HS" text, so hue is not load-bearing for identifying them. The two encodings never share a figure — the chips appear only in the instrument diagrams, family colour only in the charts — and a key on the overview states which is which. Closes the overload raised in the usability review |
+| 2026-09-20 | **Vocabulary now follows the paper**: *prompt recipe* → **task design**, *questionnaire version* → **instrument version**. *Setup* is kept as the umbrella for all 90 | The site is linked from the Reiter et al. camera-ready, so a reader arriving from the paper should not have to translate. The paper has no single word covering both humans and LLMs, so *setup* stays and the Methods glossary says so. Partially reverses the 2026-09-18 vocabulary entry |
 
 ### Discrepancies found in the paper and its repository
 
 - Kern et al. Table 2 reports Krippendorff's α **between** version modal labels. The comment in `04_human_design.R` describes it as within-version α. Within-version α is actually OL .48–.63 and HS .35–.43. The site reproduces Table 2 only to within 0.025 (7 of 20 values exact); Kern's tie rule for tweets with two valid ratings is undocumented.
 - Share of tweets whose majority label changes across human versions: HS is 38.5%; the paper says 39%.
-- The design-effect figures are inconsistent across repository outputs:
-  - `table_human_llm.tex`: 77/111 including model choice, 58/45 without;
-  - `table_human_design.tex`: 16/13 for humans;
-  - paper text: 80/114 and 13–15.
+- **Resolved 2026-09-20.** The human design effects of 13–15 in the paper come from
+  `04_human_design.R` → `table_human_llm.tex`, which builds the human total as
+  `sqrt(nominal² + annotator_panel² + design²)` over `nominal = sqrt(p(1-p)/3000)`, giving
+  OL 15.41 and HS 13.08 (reproduced exactly). The replicate term is deliberately excluded:
+  a study reports one panel's labels and the panel-sampling term already covers who was hired.
+  The competing 16/13 is in `table_human_design.tex`, whose header credits
+  `plots/make_human_design_effects.py` — a script that is **not in the repository**. Its LLM
+  columns also disagree with `03_deff.R` (model SD 3.52 vs 3.25, deff 46 vs 45.5), and 16 is not
+  reproducible from its own printed SDs under any combination, so it is a stale output of a
+  superseded decomposition. Use 13–15; `table_human_design.tex` should be deleted.
+  The paper text's 80/114 is also obsolete — the current draft says 76.7/110.6, matching
+  `table_deff.tex`.
+- §4.3's "463 bp / 513 bp" (SD across the six confidence-free task designs) is not produced by
+  any committed script or output. It is internally consistent with the paper's 1.4× and 1.9×
+  ratios, but nothing in the repository regenerates it.
 - `data_work/README.md` is out of date: it lists models and scripts that are not in the repository.
 - The `BASEDIR` paths in the R scripts are hard-coded to a local Downloads folder.
 

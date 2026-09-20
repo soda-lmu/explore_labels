@@ -178,8 +178,8 @@ function llmGrid(oc, tweetId) {
 
 function summarySentence(oc, prof) {
   if (!prof) return "No profile data for this tweet.";
-  return `Across the 15 human ratings (all five questionnaire versions pooled), ${pct(prof.human_share_pos)} said yes ` +
-    `— human instability ${dec(prof.human_instability)}. Across the 84 LLM setups (7 models × 12 prompt recipes, each averaged over 3 runs), ` +
+  return `Across the 15 human ratings (all five instrument versions pooled), ${pct(prof.human_share_pos)} said yes ` +
+    `— human instability ${dec(prof.human_instability)}. Across the 84 LLM setups (7 models × 12 task designs, each averaged over 3 runs), ` +
     `${pct(prof.llm_share_pos)} said yes — LLM instability ${dec(prof.llm_instability)}. ` +
     `Instability of 0 means everyone agreed; 1 means the vote was as close to a 50/50 split as it gets.`;
 }
@@ -215,10 +215,10 @@ async function renderDetail() {
       h("button", { type: "button", onclick: () => { state.tweet = ""; syncUrl(); renderList(); renderDetail(); } }, "Close")),
     takeaway(summarySentence(oc, prof)),
     textNode,
-    h("h3", {}, "Human ratings by questionnaire version"),
+    h("h3", {}, "Human ratings by instrument version"),
     h("div", { class: "tally-chips" }, meta.human_versions.map((v) => tallyChip(v.version, byVersion.get(v.version) ?? []))),
-    h("h3", {}, "LLM labels by model and prompt recipe"),
-    h("p", { class: "small muted" }, "Each cell is one prompt recipe for that model: three dots, one per run. Filled = labeled yes, hollow = labeled no, dotted = no data."),
+    h("h3", {}, "LLM labels by model and task design"),
+    h("p", { class: "small muted" }, "Each cell is one task design for that model: three dots, one per run. Filled = labeled yes, hollow = labeled no, dotted = no data."),
     llmGrid(oc, id));
 }
 

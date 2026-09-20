@@ -127,7 +127,7 @@ export function instrumentPicker(meta, value, name) {
   const model = select(meta.models.map((m) => ({ value: m.id, label: m.label })), p.model ?? meta.models[0].id);
   const structure = select(meta.structures.map((s) => ({ value: s.id, label: s.label })), d0.structure);
   const variant = select(meta.variants.map((v) => ({ value: v.id, label: v.label })), d0.variant);
-  const humanRow = h("div", { class: "controls" }, control("Questionnaire version", version));
+  const humanRow = h("div", { class: "controls" }, control("Instrument version", version));
   const llmRow = h("div", { class: "controls" },
     control("Model", model), control("Questions asked", structure), control("How it was shown", variant));
   wrap.append(h("div", { class: "controls" }, src), humanRow, llmRow);
