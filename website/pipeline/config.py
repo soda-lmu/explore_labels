@@ -5,7 +5,7 @@ ROOT = Path(__file__).resolve().parents[1]           # website/
 SOURCE = ROOT.parent / "sources" / "llm-annotation-sensitivity" / "data_work"
 OUT = ROOT / "src" / "public" / "data"
 
-SOURCE_REPO = "https://github.com/AnonymousACLSubmission/llm-annotation-sensitivity"
+SOURCE_REPO = "https://github.com/T-Reiter/llm-annotation-sensitivity"
 
 # folder -> canonical model id. Only the seven reported models are loaded;
 # GPT-4o-mini_run2 (temporal re-collection) and GPT-5.4-mini are excluded.

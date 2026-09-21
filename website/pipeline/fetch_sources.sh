@@ -9,6 +9,6 @@ mkdir -p "$here/sources"
 if [ -d "$dest/.git" ]; then
   git -C "$dest" pull --ff-only
 else
-  git clone --depth 1 https://github.com/AnonymousACLSubmission/llm-annotation-sensitivity.git "$dest"
+  git clone --depth 1 https://github.com/T-Reiter/llm-annotation-sensitivity.git "$dest"
 fi
 echo "Source data in $dest/data_work"
