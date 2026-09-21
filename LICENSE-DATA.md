@@ -21,14 +21,19 @@ This license covers the authors' own contribution: the labels, the ratings, and 
 derived from them.
 
 The human ratings are published in full on Hugging Face as
-[`soda-lmu/tweet-annotation-sensitivity-2`](https://huggingface.co/datasets/soda-lmu/tweet-annotation-sensitivity-2)
-(89,150 ratings). This repository uses the 44,900 of them that cover the 3,000 tweets
-analyzed in both papers, excluding 44,250 ratings on 50 additional tweets. That dataset
-carries no license tag of its own; this file is the authors' license statement for the data.
+[`soda-lmu/tweet-annotation-sensitivity-2`](https://huggingface.co/datasets/soda-lmu/tweet-annotation-sensitivity-2):
+the complete, unpruned collection of 89,150 ratings from 1,841 annotators on 3,050 tweets.
+This repository uses the 44,900-rating subset analyzed in both papers (917 annotators,
+3,000 tweets): the first three ratings, by annotator ID, per tweet in each of the five
+instrument versions.
+The same subset is distributed as `full_train_s.csv` and `full_test_s.csv` in the
+[Kern et al. replication repository](https://github.com/chkern/tweet-annotation-sensitivity/tree/main/data).
+See the README for how the subset is derived. The Hugging Face dataset carries no license
+tag of its own; this file is the authors' license statement for the data.
 
-## What it does not cover
+## What this license does not cover
 
-**The tweet text is not the authors' to license.** It originates in the hate-speech and
+The tweet text is not the authors' to license. It originates in the hate-speech and
 offensive-language corpus of
 
 > Davidson, T., Warmsley, D., Macy, M., & Weber, I. (2017). Automated Hate Speech Detection

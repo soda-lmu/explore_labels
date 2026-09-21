@@ -59,11 +59,49 @@ a separate repository: `<reproduction repo URL>`.
 
 The tweets come from Davidson et al. (2017), reaching this project through the annotation
 experiment of Kern et al. (2023), whose annotators were recruited on Prolific in late 2022.
-The human ratings are the 44,900-rating subset covering these 3,000 tweets, drawn from
-[`soda-lmu/tweet-annotation-sensitivity-2`](https://huggingface.co/datasets/soda-lmu/tweet-annotation-sensitivity-2)
-on Hugging Face (89,150 ratings in total). The LLM labels were collected for Reiter et al. Some tweets contain slurs and
-abusive language: the hosted site keeps tweet text behind an explicit content warning, and
-so does a local build.
+The LLM labels were collected for Reiter et al. Some tweets contain slurs and abusive
+language: the hosted site keeps tweet text behind an explicit content warning, and so does a
+local build.
+
+### The human ratings: which 44,900
+
+The full human collection is public on Hugging Face as
+[`soda-lmu/tweet-annotation-sensitivity-2`](https://huggingface.co/datasets/soda-lmu/tweet-annotation-sensitivity-2):
+89,150 ratings from 1,841 annotators on 3,050 tweets, unpruned. Both papers, and this site,
+use a fixed subset of it:
+
+| | Hugging Face (full) | Subset used here |
+|---|---|---|
+| Ratings | 89,150 | 44,900 |
+| Annotators | 1,841 | 917 |
+| Tweets | 3,050 | 3,000 |
+| Instrument versions | A–E | A–E |
+
+The subset is the **first three ratings per tweet in each instrument version, ordered by
+annotator ID** (not by completion time). There are two ways to get it:
+
+1. **Directly**, from the Kern et al. replication repository:
+   [`full_train_s.csv`](https://raw.githubusercontent.com/chkern/tweet-annotation-sensitivity/main/data/full_train_s.csv)
+   (33,683 ratings) and
+   [`full_test_s.csv`](https://raw.githubusercontent.com/chkern/tweet-annotation-sensitivity/main/data/full_test_s.csv)
+   (11,217). Concatenated, these are the `kern_full.csv` that this site's pipeline reads
+   from the Reiter et al. repository.
+2. **From Hugging Face**, by applying the selection rule:
+
+   ```python
+   from datasets import load_dataset
+
+   df = load_dataset("soda-lmu/tweet-annotation-sensitivity-2", split="train").to_pandas()
+   df = df[df["tweet_hashed"].notna()
+           & ~(df["hate_speech"].isna() & df["offensive_language"].isna())]
+   subset = (df.sort_values(["condition", "tweet_id", "annotator_id"])
+               .groupby(["condition", "tweet_id"]).head(3))      # 44,900 rows
+   ```
+
+   Hugging Face's `condition` is the instrument version, `annotator_id` is the annotator,
+   and `tweet_batch` is the tweet's position in the annotator's batch; the replication CSVs
+   call these `version`, `id` and `batch.tweet`. Tweet text on Hugging Face uses `\r\n` line
+   breaks; normalize them to `\n` to match the CSVs.
 
 ## License
 
