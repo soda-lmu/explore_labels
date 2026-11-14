@@ -1,61 +1,76 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GH1JBRD8EM"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-GH1JBRD8EM");
-</script>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Item explorer · Annotation Sensitivity Explorer</title>
-<meta name="description" content="Which tweets people and LLMs disagree about most, tweet by tweet: every human rating and every model run side by side.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='1' y='9' width='3' height='6' fill='%230072b2'/><rect x='6' y='4' width='3' height='11' fill='%23882255'/><rect x='11' y='7' width='3' height='8' fill='%23009e73'/></svg>">
-<link rel="stylesheet" href="./styles/site.css">
+  <meta charset="utf-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GH1JBRD8EM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-GH1JBRD8EM");
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Item explorer · Annotation Sensitivity Explorer</title>
+  <meta name="description"
+    content="Which tweets people and LLMs disagree about most, tweet by tweet: every human rating and every model run side by side.">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='1' y='9' width='3' height='6' fill='%230072b2'/><rect x='6' y='4' width='3' height='11' fill='%23882255'/><rect x='11' y='7' width='3' height='8' fill='%23009e73'/></svg>">
+  <link rel="stylesheet" href="./styles/site.css">
 </head>
+
 <body>
-<a class="sr-only" href="#main">Skip to content</a>
-<header class="site-header"><div class="inner">
-  <a class="brand" href="index.html">Annotation Sensitivity Explorer</a>
-  <nav id="site-nav" aria-label="Sections">
-    <a href="index.html">Overview</a>
-    <a href="compare.html">Compare two setups</a>
-    <a href="landscape.html">Every setup</a>
-    <a href="item-explorer.html">Item explorer</a>
-    <a href="methods.html">Methods &amp; Data</a>
-  </nav>
-  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
-    <span aria-hidden="true">&#9776;</span> <span class="nav-toggle-label">Menu</span>
-  </button>
-  <button type="button" class="theme-toggle">Dark theme</button>
-</div></header>
-<main id="main">
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="index.html">Annotation Sensitivity Explorer</a>
+      <nav id="site-nav" aria-label="Sections">
+        <a href="index.html">Overview</a>
+        <a href="compare.html">Compare two setups</a>
+        <a href="landscape.html">Every setup</a>
+        <a href="item-explorer.html">Item explorer</a>
+        <a href="methods.html">Methods &amp; Data</a>
+      </nav>
+      <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+        <span aria-hidden="true">&#9776;</span> <span class="nav-toggle-label">Menu</span>
+      </button>
+      <button type="button" class="theme-toggle">Dark theme</button>
+    </div>
+  </header>
+  <main id="main">
 
-<h1>Which tweets are contested?</h1>
-<p class="lede">For each tweet, how split were the 15 human ratings, and how split were the 84 LLM setups? Click a tweet in the table to open its detail panel: the tweet text and every rating it got.</p>
-<div class="controls" id="controls"></div>
-<p id="index-summary" class="small muted"></p>
+    <h1>Which tweets are contested?</h1>
+    <p class="lede">For each tweet, how split were the 15 human ratings, and how split were the 84 LLM setups? Click a
+      tweet in the table to open its detail panel: the tweet text and every rating it got.</p>
+    <div class="controls" id="controls"></div>
+    <p id="index-summary" class="small muted"></p>
 
-<div id="hover-gate"></div>
-<section id="index-list" aria-label="Sensitivity index">
-  <div id="index-table"></div>
-  <div id="index-more"></div>
-</section>
+    <div id="hover-gate"></div>
+    <section id="index-list" aria-label="Sensitivity index">
+      <div id="index-table"></div>
+      <div id="index-more"></div>
+    </section>
 
-<section id="detail" class="anchor-target" aria-label="Tweet detail"></section>
+    <section id="detail" class="anchor-target" aria-label="Tweet detail"></section>
 
-</main>
-<footer><div class="inner">
-  <h2 class="refs-h">References</h2>
-  <ol class="refs">
-    <li>Kern, C., Eckman, S., Beck, J., Chew, R., Ma, B., &amp; Kreuter, F. (2023). <a href="https://aclanthology.org/2023.findings-emnlp.992/">Annotation Sensitivity: Training Data Collection Methods Affect Model Performance</a>. <i>Findings of EMNLP 2023</i>. Source of the human ratings.</li>
-    <li>Reiter et al. (2026). <!-- TODO: link once the paper is public --><i class="placeholder-cite">Reliable but Design-Sensitive: Instrument Uncertainty in LLM Annotation</i>. Under review. Source of the LLM labels.</li>
-  </ol>
-  <p class="source">Site code and data package: <a href="https://github.com/soda-lmu/explore_labels">github.com/soda-lmu/explore_labels</a>. <span id="build-info"></span></p>
-</div></footer>
-<script type="module" src="./js/pages/item-explorer.js"></script>
+  </main>
+  <footer>
+    <div class="inner">
+      <h2 class="refs-h">References</h2>
+      <ol class="refs">
+        <li>Kern, C., Eckman, S., Beck, J., Chew, R., Ma, B., &amp; Kreuter, F. (2023). <a
+            href="https://aclanthology.org/2023.findings-emnlp.992/">Annotation Sensitivity: Training Data Collection
+            Methods Affect Model Performance</a>. <i>Findings of EMNLP 2023</i>. Source of the human ratings.</li>
+        <li>Reiter et al. (2026). <a href="https://aclanthology.org/2026.uncertainlp-main.20.pdf"><i>Reliable but
+              Design-Sensitive: Instrument Uncertainty in LLM Annotation</i></a>. Source of the LLM labels.</li>
+      </ol>
+      <p class="source">Site code and data package: <a
+          href="https://github.com/soda-lmu/explore_labels">github.com/soda-lmu/explore_labels</a>. <span
+          id="build-info"></span></p>
+    </div>
+  </footer>
+  <script type="module" src="./js/pages/item-explorer.js"></script>
 </body>
+
 </html>

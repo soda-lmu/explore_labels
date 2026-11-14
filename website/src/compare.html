@@ -1,95 +1,110 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GH1JBRD8EM"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-GH1JBRD8EM");
-</script>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Compare two setups · Annotation Sensitivity Explorer</title>
-<meta name="description" content="Pick two ways of producing labels and see how many of the same 3,000 tweets end up labeled differently.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='1' y='9' width='3' height='6' fill='%230072b2'/><rect x='6' y='4' width='3' height='11' fill='%23882255'/><rect x='11' y='7' width='3' height='8' fill='%23009e73'/></svg>">
-<link rel="stylesheet" href="./styles/site.css">
+  <meta charset="utf-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GH1JBRD8EM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-GH1JBRD8EM");
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compare two setups · Annotation Sensitivity Explorer</title>
+  <meta name="description"
+    content="Pick two ways of producing labels and see how many of the same 3,000 tweets end up labeled differently.">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='1' y='9' width='3' height='6' fill='%230072b2'/><rect x='6' y='4' width='3' height='11' fill='%23882255'/><rect x='11' y='7' width='3' height='8' fill='%23009e73'/></svg>">
+  <link rel="stylesheet" href="./styles/site.css">
 </head>
+
 <body>
-<a class="sr-only" href="#main">Skip to content</a>
-<header class="site-header"><div class="inner">
-  <a class="brand" href="index.html">Annotation Sensitivity Explorer</a>
-  <nav id="site-nav" aria-label="Sections">
-    <a href="index.html">Overview</a>
-    <a href="compare.html">Compare two setups</a>
-    <a href="landscape.html">Every setup</a>
-    <a href="item-explorer.html">Item explorer</a>
-    <a href="methods.html">Methods &amp; Data</a>
-  </nav>
-  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
-    <span aria-hidden="true">&#9776;</span> <span class="nav-toggle-label">Menu</span>
-  </button>
-  <button type="button" class="theme-toggle">Dark theme</button>
-</div></header>
-<main id="main">
-
-<h1>Compare two setups</h1>
-<p class="lede">A <b>setup</b> is one way of producing labels: a human instrument version, or one model under one task design. Choose two and see how many of the same 3,000 tweets end up labeled differently.</p>
-
-<div class="starters">
-  <p class="small muted" id="starters-label">Not sure where to start? Try one of these:</p>
-  <div class="chips" id="starters"></div>
-</div>
-
-<div class="controls" id="global-controls"></div>
-<div class="grid two" id="pickers"></div>
-<div class="controls" id="swap-slot"></div>
-
-<section id="instrument-cards">
-  <h2>What each setup produces</h2>
-  <div id="guardrail"></div>
-  <div class="grid two" id="cards"></div>
-  <div class="figure" id="locator"></div>
-</section>
-
-<section id="comparison">
-  <h2>What changes between them</h2>
-  <div id="headline"></div>
-  <div class="grid tiles" id="cmp-tiles"></div>
-  <p class="small muted" id="method-short"></p>
-  <div class="controls" id="agg-control"></div>
-  <p class="small muted agg-note" id="agg-note"></p>
-  <div class="grid two">
-    <div>
-      <h3>Which tweets the two setups disagree on</h3>
-      <div id="matrix"></div>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="index.html">Annotation Sensitivity Explorer</a>
+      <nav id="site-nav" aria-label="Sections">
+        <a href="index.html">Overview</a>
+        <a href="compare.html">Compare two setups</a>
+        <a href="landscape.html">Every setup</a>
+        <a href="item-explorer.html">Item explorer</a>
+        <a href="methods.html">Methods &amp; Data</a>
+      </nav>
+      <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+        <span aria-hidden="true">&#9776;</span> <span class="nav-toggle-label">Menu</span>
+      </button>
+      <button type="button" class="theme-toggle">Dark theme</button>
     </div>
-    <div>
-      <h3>Save or share this comparison</h3>
-      <div class="controls">
-        <button type="button" id="download">Download comparison (CSV)</button>
-        <button type="button" id="copy-link">Copy link to this comparison</button>
+  </header>
+  <main id="main">
+
+    <h1>Compare two setups</h1>
+    <p class="lede">A <b>setup</b> is one way of producing labels: a human instrument version, or one model under one
+      task design. Choose two and see how many of the same 3,000 tweets end up labeled differently.</p>
+
+    <div class="starters">
+      <p class="small muted" id="starters-label">Not sure where to start? Try one of these:</p>
+      <div class="chips" id="starters"></div>
+    </div>
+
+    <div class="controls" id="global-controls"></div>
+    <div class="grid two" id="pickers"></div>
+    <div class="controls" id="swap-slot"></div>
+
+    <section id="instrument-cards">
+      <h2>What each setup produces</h2>
+      <div id="guardrail"></div>
+      <div class="grid two" id="cards"></div>
+      <div class="figure" id="locator"></div>
+    </section>
+
+    <section id="comparison">
+      <h2>What changes between them</h2>
+      <div id="headline"></div>
+      <div class="grid tiles" id="cmp-tiles"></div>
+      <p class="small muted" id="method-short"></p>
+      <div class="controls" id="agg-control"></div>
+      <p class="small muted agg-note" id="agg-note"></p>
+      <div class="grid two">
+        <div>
+          <h3>Which tweets the two setups disagree on</h3>
+          <div id="matrix"></div>
+        </div>
+        <div>
+          <h3>Save or share this comparison</h3>
+          <div class="controls">
+            <button type="button" id="download">Download comparison (CSV)</button>
+            <button type="button" id="copy-link">Copy link to this comparison</button>
+          </div>
+          <p class="small muted" id="copy-status" aria-live="polite"></p>
+          <details class="method-details">
+            <summary>More on the statistics</summary>
+            <p class="small" id="method-long"></p>
+          </details>
+        </div>
       </div>
-      <p class="small muted" id="copy-status" aria-live="polite"></p>
-      <details class="method-details">
-        <summary>More on the statistics</summary>
-        <p class="small" id="method-long"></p>
-      </details>
+      <h3>Tweets that get a different label</h3>
+      <div id="examples"></div>
+    </section>
+  </main>
+  <footer>
+    <div class="inner">
+      <h2 class="refs-h">References</h2>
+      <ol class="refs">
+        <li>Kern, C., Eckman, S., Beck, J., Chew, R., Ma, B., &amp; Kreuter, F. (2023). <a
+            href="https://aclanthology.org/2023.findings-emnlp.992/">Annotation Sensitivity: Training Data Collection
+            Methods Affect Model Performance</a>. <i>Findings of EMNLP 2023</i>. Source of the human ratings.</li>
+        <li>Reiter et al. (2026). <a href="https://aclanthology.org/2026.uncertainlp-main.20.pdf"><i>Reliable but
+              Design-Sensitive: Instrument Uncertainty in LLM Annotation</i></a>. Source of the LLM labels.</li>
+      </ol>
+      <p class="source">Site code and data package: <a
+          href="https://github.com/soda-lmu/explore_labels">github.com/soda-lmu/explore_labels</a>. <span
+          id="build-info"></span></p>
     </div>
-  </div>
-  <h3>Tweets that get a different label</h3>
-  <div id="examples"></div>
-</section>
-</main>
-<footer><div class="inner">
-  <h2 class="refs-h">References</h2>
-  <ol class="refs">
-    <li>Kern, C., Eckman, S., Beck, J., Chew, R., Ma, B., &amp; Kreuter, F. (2023). <a href="https://aclanthology.org/2023.findings-emnlp.992/">Annotation Sensitivity: Training Data Collection Methods Affect Model Performance</a>. <i>Findings of EMNLP 2023</i>. Source of the human ratings.</li>
-    <li>Reiter et al. (2026). <!-- TODO: link once the paper is public --><i class="placeholder-cite">Reliable but Design-Sensitive: Instrument Uncertainty in LLM Annotation</i>. Under review. Source of the LLM labels.</li>
-  </ol>
-  <p class="source">Site code and data package: <a href="https://github.com/soda-lmu/explore_labels">github.com/soda-lmu/explore_labels</a>. <span id="build-info"></span></p>
-</div></footer>
-<script type="module" src="./js/pages/compare.js"></script>
+  </footer>
+  <script type="module" src="./js/pages/compare.js"></script>
 </body>
+
 </html>
